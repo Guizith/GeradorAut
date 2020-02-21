@@ -10,14 +10,22 @@ printf("digite a sentenca: ");
 gets(stc);
 goto E0; 
 
-E0: 
- 
- E1: 
- 
- E2: 
- 
- E3: 
- 
- E4: 
- 
- } 
+E0:
+
+if(stc[p]=='a'){ 
+p++;
+goto E1;
+}
+E1:
+
+if(stc[p]=='b'){ 
+p++;
+goto E2;
+}
+E2:
+
+if(stc[p]=='c'){ 
+p++;
+goto E2;
+}
+} 

@@ -13,6 +13,7 @@ int main(int argc, char *argv[]) {
 	int qtdfin=0;
 	int fin[200];
 	
+	
 
 	printf("\n Quantos Simbolos?:");
 	scanf("%d",&numsimb);
@@ -34,17 +35,26 @@ int main(int argc, char *argv[]) {
 	}
 	
 	
+	int reg [est][numsimb];
 	for(i=0;i<est;i++){
 		for(j=0;j<numsimb;j++){
 				printf("Para o estado e%d , simbolo %c , qual proximo estado? ", i,simb[j]);
+				scanf("%d",&reg[i][j]);
+		}
+		
+	}
+	
+	/*
+	print regras
+	for(i=0;i<est;i++){
+		for(j=0;j<numsimb;j++){
+				printf(" \n regra do estado %d , simb %c : %d  \n \n",i,simb[j],reg[i][j] );
 				
 		}
 		
 	}
 	
-	
-	
-	
+	*/
 	
 	
 	/*
@@ -64,7 +74,7 @@ int main(int argc, char *argv[]) {
 	for(i=0;i<numsimb;i++){
 		printf("\nsimbs:%s", simb);
 	}*/
-/*
+
 	FILE *sc=fopen("Automato.c", "w");
 		
 	fflush(sc);
@@ -78,10 +88,22 @@ int main(int argc, char *argv[]) {
 	fprintf(sc,"printf(\"digite a sentenca: \"); \n");
 	fprintf(sc,"gets(stc);\n");
 	fprintf(sc,"goto E0; \n\n");
-	
+	printf("inici");
 	//logica
-	while(i <est){
+	i=0;
+	j=0;
+	while(i < est){
+		printf("while");
 		fprintf(sc,"E%d:\n\n",i);
+		if(reg[i][j]!=(-1)){
+				printf("if");
+			fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+			fprintf(sc,"p++;\n",simb[j]);
+			fprintf(sc,"goto E%d;\n",reg[i][j]);
+			fprintf(sc,"}\n");
+		} 
+		
+		j++;
 		i++;
 	}
 	
@@ -90,6 +112,6 @@ int main(int argc, char *argv[]) {
 	
 	fprintf(sc,"} ");
 	fclose(sc);
-	*/
+
 	return 0;
 }
