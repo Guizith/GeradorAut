@@ -7,11 +7,11 @@ int main(int argc, char *argv[]) {
 	
 	int i,j;
 	int numsimb = 0;
-	char simb[200];
+	char simb[100];
 	int est=0;
 	int estini =0;
 	int qtdfin=0;
-	int fin[200];
+	int fin[100];
 	
 	
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 	scanf("%d",&qtdfin);
 	for(i=0;i<qtdfin;i++){
 		printf("\n Digite o estado final %d :",i);
-		scanf("%d",&fin);
+		scanf("%d",&fin[i]);
 	}
 	
 	
@@ -78,100 +78,88 @@ int main(int argc, char *argv[]) {
 	FILE *sc=fopen("Automato.c", "w");
 		
 	fflush(sc);
-	//inicializaão cod
+	//inicializaão code
+	//fprintf(sc,"	");
 	fprintf(sc,"#include <stdio.h>\n");
-	fprintf(sc,"#include <stdlib.h\n");
+	fprintf(sc,"#include <stdlib.h>\n");
 	fprintf(sc,"#include <conio.h>\n\n");
 	fprintf(sc,"int main(){ \n \n");
+	fprintf(sc,"	");
 	fprintf(sc,"char stc[200]; \n");
+	fprintf(sc,"	");
 	fprintf(sc,"int p=0; \n");
+	fprintf(sc,"	");
 	fprintf(sc,"printf(\"digite a sentenca: \"); \n");
+	fprintf(sc,"	");
 	fprintf(sc,"gets(stc);\n");
-	fprintf(sc,"goto E0; \n\n");
-	printf("inici");
+	fprintf(sc,"	");
+	fprintf(sc,"goto E%d; \n\n",estini);
 	
-		/*
-	i,j=0;
-	
-	for(i=0;i<est*numsimb;i++){
-		fprintf(sc,"E%d:\n\n",i);
-		int ft = 0;
-		for(j=0;j<numsimb*est;j++){
-			
-			if(ft== 0){
-					printf("if");
-				fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
-				fprintf(sc,"p++;\n",simb[j]);
-				fprintf(sc,"goto E%d;\n",reg[i][j]);
-				fprintf(sc,"} \n \n");
-				ft = 1;
-			}
-			else {
-				printf("\n else\n");
-				fprintf(sc,"else if(stc[p]=='%c') { \n",simb[j]);
-				fprintf(sc,"goto REJEITA();\n");
-				
-				fprintf(sc,"} \n \n");
-			}
-		}
-	}
-
-	i=0;
-	j=0;
-	int k =0;
-	while(i < est){
-		printf("while");
-		fprintf(sc,"E%d:\n\n",i);
-		for(k=0;k<numsimb;k++){
-			printf("\n %d \n", reg[i][j]);	
-			if(reg[i][j]!=(-1)){
-					printf("if");
-				fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
-				fprintf(sc,"p++;\n",simb[j]);
-				fprintf(sc,"goto E%d;\n",reg[i][j]);
-				fprintf(sc,"} \n \n");
-			} 
-			else if(reg[i][j]==(-1)){
-				printf("\n else\n");
-				fprintf(sc,"else if(stc[p]=='%c') { \n",simb[k]);
-				fprintf(sc,"goto REJEITA();\n");
-				
-				fprintf(sc,"} \n \n");
-			}
-		}
-		
-		j=0;
-		i++;
-	}
-		*/
-
+	//construção do automato goto
 	for(i=0;i<est;i++){
+		fprintf(sc,"	");
 		fprintf(sc,"E%d:\n\n",i);
-		int dc=1;
+		//for para fazer primeiro if
 		for(j=0;j<numsimb;j++){
-			printf("\n %d \n", reg[j][i]);
 			if(reg[j][i]!=(-1)){
-				printf("if");
+				fprintf(sc,"	");
 				fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+				fprintf(sc,"	");
+				fprintf(sc,"	");
 				fprintf(sc,"p++;\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
 				fprintf(sc,"goto E%d;\n",reg[j][i]);
+				fprintf(sc,"	");
 				fprintf(sc,"} \n \n");
 			} 	
 		}
-			for(j=0;j<numsimb;j++){
-				printf("\n %d \n", reg[j][i]);
-				if(reg[i][j]==(-1)){
-					printf("\n else\n");
-					fprintf(sc,"else if(stc[p]=='%c') { \n",simb[j]);
-					fprintf(sc,"goto REJEITA();\n");
-					fprintf(sc,"} \n \n");
+		//For para fazer else apos o primeiro if
+		for(j=0;j<numsimb;j++){
+			if(reg[i][j]==(-1)){
+				fprintf(sc,"	");
+				fprintf(sc,"else if(stc[p]=='%c') { \n",simb[j]);
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"goto REJEITA;\n");
+				fprintf(sc,"	");
+				fprintf(sc,"} \n \n");
 			}
-		} 	
+		} 
+		//For para fazer goto ACEITA, caso seja estado final
+		int final;	
+		for(final=0;final<qtdfin;final++){
+			printf("entrou for final  %d \n",final);
+			printf("entrou  for final  fin d final %d \n",fin[final]);		
+			printf("entrou  for final  est %d \n",i);
+			if(i==fin[final]){
+				printf("entrou final  %d \n",final);
+				fprintf(sc,"	");
+				fprintf(sc,"else\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"goto ACEITA;\n \n");
+			}
+		}
 	}
 
+
+	//aceita e rejeita
+	fprintf(sc,"	");
+	fprintf(sc,"REJEITA:\n");
+	fprintf(sc,"	");
+	fprintf(sc,"printf(\"rejeita\"); \n");
+	fprintf(sc,"	");
+	fprintf(sc,"exit(0);\n \n ");
+	fprintf(sc,"	");
+	fprintf(sc,"ACEITA:\n");
+	fprintf(sc,"	");
+	fprintf(sc,"printf(\"aceita\"); \n");
+	fprintf(sc,"	");
+	fprintf(sc,"exit(0);\n \n ");
 		
 		
-	
+	//fechamento main e fechamento arquivo.c
 	fprintf(sc,"} ");
 	fclose(sc);
 
