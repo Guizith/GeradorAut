@@ -147,29 +147,30 @@ int main(int argc, char *argv[]) {
 
 	for(i=0;i<est;i++){
 		fprintf(sc,"E%d:\n\n",i);
-		
+		int dc=1;
 		for(j=0;j<numsimb;j++){
 			printf("\n %d \n", reg[j][i]);
-			
 			if(reg[j][i]!=(-1)){
-					printf("if");
+				printf("if");
 				fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
 				fprintf(sc,"p++;\n");
 				fprintf(sc,"goto E%d;\n",reg[j][i]);
 				fprintf(sc,"} \n \n");
-			} 
-			else if(reg[i][j]==(-1)){
-				printf("\n else\n");
-				fprintf(sc,"else if(stc[p]=='%c') { \n",simb[j]);
-				fprintf(sc,"goto REJEITA();\n");
-				
-				fprintf(sc,"} \n \n");
-			}
-			
+			} 	
 		}
-		
-		
+			for(j=0;j<numsimb;j++){
+				printf("\n %d \n", reg[j][i]);
+				if(reg[i][j]==(-1)){
+					printf("\n else\n");
+					fprintf(sc,"else if(stc[p]=='%c') { \n",simb[j]);
+					fprintf(sc,"goto REJEITA();\n");
+					fprintf(sc,"} \n \n");
+			}
+		} 	
 	}
+
+		
+		
 	
 	fprintf(sc,"} ");
 	fclose(sc);
