@@ -48,10 +48,9 @@ int main(int argc, char *argv[]) {
 				printf("Para o estado e%d , simbolo %c , qual proximo estado? ", i,simb[j]);
 				scanf("%d",&reg[i][j]);
 		}
-		
 	}
 	
-	printf("Como voce quer que seja feito o codigo do automato: \n");
+	printf("\nComo voce quer que seja feito o codigo do automato: \n");
 	printf("Digite 1-Funcao\n");
 	printf("Digite 2-Goto\n");
 	printf("Digite 3-Goto e Funcao(sera gerado dois arquivos.c)\n");
@@ -113,8 +112,6 @@ int main(int argc, char *argv[]) {
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
-					printf("\n estado %d",i);
-					printf("\nvalor simb if 1  %c",simb[j]);
 					fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
@@ -134,7 +131,6 @@ int main(int argc, char *argv[]) {
 				printf("\n estado %d",i);	
 				if(reg[i][j]!=(-1) && ft == 0){
 					fprintf(sc,"	");
-					printf("\n valor simb if2 %c",simb[j]);
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
@@ -234,8 +230,6 @@ int main(int argc, char *argv[]) {
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
-					printf("\n estado %d",i);
-					printf("\nvalor simb if 1  %c",simb[j]);
 					fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
@@ -255,7 +249,6 @@ int main(int argc, char *argv[]) {
 				printf("\n estado %d",i);	
 				if(reg[i][j]!=(-1) && ft == 0){
 					fprintf(sc,"	");
-					printf("\n valor simb if2 %c",simb[j]);
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
@@ -349,8 +342,6 @@ int main(int argc, char *argv[]) {
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
-					printf("\n estado %d",i);
-					printf("\nvalor simb if 1  %c",simb[j]);
 					fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
@@ -367,10 +358,8 @@ int main(int argc, char *argv[]) {
 			//For para fazer else if apos o primeiro if
 			int ft = 1;
 			for(j=0;j<numsimb;j++){
-				printf("\n estado %d",i);	
 				if(reg[i][j]!=(-1) && ft == 0){
 					fprintf(sc,"	");
-					printf("\n valor simb if2 %c",simb[j]);
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
@@ -470,8 +459,6 @@ int main(int argc, char *argv[]) {
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
-					printf("\n estado %d",i);
-					printf("\nvalor simb if 1  %c",simb[j]);
 					fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
@@ -487,11 +474,9 @@ int main(int argc, char *argv[]) {
 			
 			//For para fazer else if apos o primeiro if
 			int ft = 1;
-			for(j=0;j<numsimb;j++){
-				printf("\n estado %d",i);	
+			for(j=0;j<numsimb;j++){	
 				if(reg[i][j]!=(-1) && ft == 0){
 					fprintf(sc,"	");
-					printf("\n valor simb if2 %c",simb[j]);
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
