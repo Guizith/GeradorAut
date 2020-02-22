@@ -2,20 +2,23 @@
 #include <stdlib.h>
 #include <conio.h>
 
-
 int main(){ 
  
 	char stc[200]; 
 	int p=0; 
 	printf("digite a sentenca: "); 
 	gets(stc);
-	goto E0; 
+	goto E1; 
 
 	E0:
 
-	if(stc[p]=='a'){ 
+	if(stc[p]=='d'){ 
 		p++;
-		goto E1;
+		goto E3;
+	} 
+ 
+	else if(stc[p]=='a') { 
+		goto REJEITA;
 	} 
  
 	else if(stc[p]=='b') { 
@@ -28,24 +31,49 @@ int main(){
  
 	E1:
 
-	if(stc[p]=='b'){ 
+	if(stc[p]=='a'){ 
 		p++;
 		goto E2;
 	} 
  
-	else if(stc[p]=='a') { 
+	else if(stc[p]=='c'){ 
+		p++;
+		goto E0;
+	} 
+ 
+	else if(stc[p]=='b') { 
 		goto REJEITA;
+	} 
+ 
+	else if(stc[p]=='d') { 
+		goto REJEITA;
+	} 
+ 
+	E2:
+
+	if(stc[p]=='a'){ 
+		p++;
+		goto E4;
+	} 
+ 
+	else if(stc[p]=='b'){ 
+		p++;
+		goto E3;
 	} 
  
 	else if(stc[p]=='c') { 
 		goto REJEITA;
 	} 
  
-	E2:
+	else if(stc[p]=='d') { 
+		goto REJEITA;
+	} 
+ 
+	E3:
 
-	if(stc[p]=='c'){ 
+	if(stc[p]=='d'){ 
 		p++;
-		goto E2;
+		goto E3;
 	} 
  
 	else if(stc[p]=='a') { 
@@ -53,6 +81,32 @@ int main(){
 	} 
  
 	else if(stc[p]=='b') { 
+		goto REJEITA;
+	} 
+ 
+	else if(stc[p]=='c') { 
+		goto REJEITA;
+	} 
+ 
+	else
+		goto ACEITA;
+ 
+	E4:
+
+	if(stc[p]=='a'){ 
+		p++;
+		goto E4;
+	} 
+ 
+	else if(stc[p]=='b') { 
+		goto REJEITA;
+	} 
+ 
+	else if(stc[p]=='c') { 
+		goto REJEITA;
+	} 
+ 
+	else if(stc[p]=='d') { 
 		goto REJEITA;
 	} 
  
