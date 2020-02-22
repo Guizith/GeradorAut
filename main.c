@@ -89,26 +89,87 @@ int main(int argc, char *argv[]) {
 	fprintf(sc,"gets(stc);\n");
 	fprintf(sc,"goto E0; \n\n");
 	printf("inici");
-	//logica
+	
+		/*
+	i,j=0;
+	
+	for(i=0;i<est*numsimb;i++){
+		fprintf(sc,"E%d:\n\n",i);
+		int ft = 0;
+		for(j=0;j<numsimb*est;j++){
+			
+			if(ft== 0){
+					printf("if");
+				fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+				fprintf(sc,"p++;\n",simb[j]);
+				fprintf(sc,"goto E%d;\n",reg[i][j]);
+				fprintf(sc,"} \n \n");
+				ft = 1;
+			}
+			else {
+				printf("\n else\n");
+				fprintf(sc,"else if(stc[p]=='%c') { \n",simb[j]);
+				fprintf(sc,"goto REJEITA();\n");
+				
+				fprintf(sc,"} \n \n");
+			}
+		}
+	}
+
 	i=0;
 	j=0;
+	int k =0;
 	while(i < est){
 		printf("while");
 		fprintf(sc,"E%d:\n\n",i);
-		if(reg[i][j]!=(-1)){
-				printf("if");
-			fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
-			fprintf(sc,"p++;\n",simb[j]);
-			fprintf(sc,"goto E%d;\n",reg[i][j]);
-			fprintf(sc,"}\n");
-		} 
+		for(k=0;k<numsimb;k++){
+			printf("\n %d \n", reg[i][j]);	
+			if(reg[i][j]!=(-1)){
+					printf("if");
+				fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+				fprintf(sc,"p++;\n",simb[j]);
+				fprintf(sc,"goto E%d;\n",reg[i][j]);
+				fprintf(sc,"} \n \n");
+			} 
+			else if(reg[i][j]==(-1)){
+				printf("\n else\n");
+				fprintf(sc,"else if(stc[p]=='%c') { \n",simb[k]);
+				fprintf(sc,"goto REJEITA();\n");
+				
+				fprintf(sc,"} \n \n");
+			}
+		}
 		
-		j++;
+		j=0;
 		i++;
 	}
-	
-	
-	
+		*/
+
+	for(i=0;i<est;i++){
+		fprintf(sc,"E%d:\n\n",i);
+		
+		for(j=0;j<numsimb;j++){
+			printf("\n %d \n", reg[j][i]);
+			
+			if(reg[j][i]!=(-1)){
+					printf("if");
+				fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+				fprintf(sc,"p++;\n");
+				fprintf(sc,"goto E%d;\n",reg[j][i]);
+				fprintf(sc,"} \n \n");
+			} 
+			else if(reg[i][j]==(-1)){
+				printf("\n else\n");
+				fprintf(sc,"else if(stc[p]=='%c') { \n",simb[j]);
+				fprintf(sc,"goto REJEITA();\n");
+				
+				fprintf(sc,"} \n \n");
+			}
+			
+		}
+		
+		
+	}
 	
 	fprintf(sc,"} ");
 	fclose(sc);
