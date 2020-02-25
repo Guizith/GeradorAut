@@ -14,6 +14,7 @@ void e1();
 void e2();
 void e3();
 void e4();
+void e5();
 void rejeita();
 void aceita(); 
 
@@ -24,60 +25,11 @@ int main(){
  
 	printf("digite a sentenca: "); 
 	gets(stc);
-	e1(); 
+	e0(); 
 	return(0); 
 }
 
 void e0(){ 
-	if(stc[p]==0){
-		rejeita(); 
-	}
- 
-	else if(stc[p]=='d'){ 
-		p++;
-		e3();
-	} 
- 
-	else if(stc[p]=='a') { 
-		rejeita();
-	} 
- 
-	else if(stc[p]=='b') { 
-		rejeita();
-	} 
- 
-	else if(stc[p]=='c') { 
-		rejeita();
-	} 
- 
-} 
- 
-void e1(){ 
-	if(stc[p]==0){
-		rejeita(); 
-	}
- 
-	else if(stc[p]=='a'){ 
-		p++;
-		e2();
-	} 
- 
-	else if(stc[p]=='c'){ 
-		p++;
-		e0();
-	} 
- 
-	else if(stc[p]=='b') { 
-		rejeita();
-	} 
- 
-	else if(stc[p]=='d') { 
-		rejeita();
-	} 
- 
-} 
- 
-void e2(){ 
 	if(stc[p]==0){
 		rejeita(); 
 	}
@@ -92,60 +44,120 @@ void e2(){
 		e3();
 	} 
  
-	else if(stc[p]=='c') { 
-		rejeita();
-	} 
- 
-	else if(stc[p]=='d') { 
-		rejeita();
-	} 
- 
-} 
- 
-void e3(){ 
-	if(stc[p]=='d'){ 
+	else if(stc[p]=='c'){ 
 		p++;
-		e3();
+		e1();
 	} 
  
-	else if(stc[p]=='a') { 
-		rejeita();
-	} 
- 
-	else if(stc[p]=='b') { 
-		rejeita();
-	} 
- 
-	else if(stc[p]=='c') { 
-		rejeita();
-	} 
- 
-	else
-		aceita();
-
 } 
  
-void e4(){ 
-	if(stc[p]=='a'){ 
+void e1(){ 
+	if(stc[p]==0){
+		rejeita(); 
+	}
+ 
+	else if(stc[p]=='a'){ 
 		p++;
 		e4();
 	} 
  
-	else if(stc[p]=='b') { 
-		rejeita();
+	else if(stc[p]=='b'){ 
+		p++;
+		e2();
 	} 
  
-	else if(stc[p]=='c') { 
-		rejeita();
+	else if(stc[p]=='c'){ 
+		p++;
+		e1();
 	} 
  
-	else if(stc[p]=='d') { 
-		rejeita();
+} 
+ 
+void e2(){ 
+	if(stc[p]=='a'){ 
+		p++;
+		e2();
+	} 
+ 
+	else if(stc[p]=='b'){ 
+		p++;
+		e2();
+	} 
+ 
+	else if(stc[p]=='c'){ 
+		p++;
+		e2();
 	} 
  
 	else
 		aceita();
 
+} 
+ 
+void e3(){ 
+	if(stc[p]==0){
+		rejeita(); 
+	}
+ 
+	else if(stc[p]=='a'){ 
+		p++;
+		e4();
+	} 
+ 
+	else if(stc[p]=='b'){ 
+		p++;
+		e3();
+	} 
+ 
+	else if(stc[p]=='c'){ 
+		p++;
+		e2();
+	} 
+ 
+} 
+ 
+void e4(){ 
+	if(stc[p]==0){
+		rejeita(); 
+	}
+ 
+	else if(stc[p]=='a'){ 
+		p++;
+		e5();
+	} 
+ 
+	else if(stc[p]=='b'){ 
+		p++;
+		e3();
+	} 
+ 
+	else if(stc[p]=='c'){ 
+		p++;
+		e1();
+	} 
+ 
+} 
+ 
+void e5(){ 
+	if(stc[p]==0){
+		rejeita(); 
+	}
+ 
+	else if(stc[p]=='a'){ 
+		p++;
+		e2();
+	} 
+ 
+	else if(stc[p]=='b'){ 
+		p++;
+		e3();
+	} 
+ 
+	else if(stc[p]=='c'){ 
+		p++;
+		e1();
+	} 
+ 
 } 
  
 void rejeita(){

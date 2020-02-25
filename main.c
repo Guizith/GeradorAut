@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 		printf("\nsimbs:%s", simb);
 	}*/
 	
-	//Inicio de construção do codigo
+//=====================================================>>> Inicio de construção do codigo <<< ===============================================================================
 	if(fugo ==2){
 		FILE *sc=fopen("AutomatoGoto.c", "w");
 		fflush(sc);
@@ -113,57 +113,51 @@ int main(int argc, char *argv[]) {
 			fprintf(sc,"E%d:\n\n",i);
 			
 			int final=0;
+			int nescr =0;
+			int jfp=0;		//variavel importante! caso seja estado final o primeiro if não sera de rejeição caso a sentença acabe
+							//logo, esta variavel é um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
+			
+			//For para verificar se o estado atual é final!!!
 			for(final=0;final<qtdfin;final++){	
-				if(i!=fin[final]){
-					printf(sc,"	");
-					fprintf(sc,"if(stc[p]==0){\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"goto REJEITA; \n");
-					fprintf(sc,"	");
-					fprintf(sc,"}\n \n");
-					final=qtdfin;
+				if(i==fin[final]){		
+					nescr++;
 				}
 			}
 			
-			/*
-			
-			int fz=1;
-			while(fz != 0){
-				final++;
-				if(i!=fin[final]){
-					fz =0;
-					fprintf(sc,"	");
-					fprintf(sc,"if(stc[p]==0){\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"goto REJEITA; \n");
-					fprintf(sc,"	");
-					fprintf(sc,"}\n \n");
-				}
+			//Caso nao seja estado final, fazer p==0 -> rejeita
+			if(nescr == 0){
+				fprintf(sc,"	");
+				fprintf(sc,"if(stc[p]==0){\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"goto REJEITA; \n");
+				fprintf(sc,"	");
+				fprintf(sc,"}\n \n");
 			}
+			//Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
+			else if(nescr==1){
+				for(j=0;j<numsimb;j++){
+					if(reg[i][j]!=(-1)){
+						jfp=1;
+						fprintf(sc,"	");
+						fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+						fprintf(sc,"	");
+						fprintf(sc,"	");
+						fprintf(sc,"p++;\n");
+						fprintf(sc,"	");
+						fprintf(sc,"	");
+						fprintf(sc,"goto E%d;\n",reg[i][j]);
+						fprintf(sc,"	");
+						fprintf(sc,"} \n \n");
+						j=200;
+					} 	
+				}
 				
-			//for para fazer primeiro if
-			for(j=0;j<numsimb;j++){
-				if(reg[i][j]!=(-1)){
-					fprintf(sc,"	");
-					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"p++;\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"goto E%d;\n",reg[i][j]);
-					fprintf(sc,"	");
-					fprintf(sc,"} \n \n");
-					j=200;
-				} 	
 			}
-			*/
-			//For para fazer else if apos o primeiro if
 	
+			//For para fazer else if apos o primeiro if
 			for(j=0;j<numsimb;j++){	
-				if(reg[i][j]!=(-1)){
+				if(reg[i][j]!=(-1) && jfp==0){
 					fprintf(sc,"	");
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
@@ -174,6 +168,10 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"goto E%d;\n",reg[i][j]);
 					fprintf(sc,"	");
 					fprintf(sc,"} \n \n");
+				}
+				//Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
+				else if(reg[i][j]!=(-1) && jfp==1){
+					jfp=0;
 				}
 			}
 			
@@ -189,17 +187,16 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"} \n \n");
 				}
 			} 
+			
 			//For para fazer goto ACEITA, caso seja estado final
-				
-			for(final=0;final<qtdfin;final++){	
-				if(i==fin[final]){
-					fprintf(sc,"	");
-					fprintf(sc,"else\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"goto ACEITA;\n \n");
-				}
+			if(nescr==1){
+				fprintf(sc,"	");
+				fprintf(sc,"else\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"goto ACEITA;\n \n");
 			}
+		
 		}
 	
 	
@@ -220,7 +217,12 @@ int main(int argc, char *argv[]) {
 			
 		//fechamento main e fechamento arquivo.c
 		fprintf(sc,"} ");
-		fclose(sc);
+		if(fclose(sc)==0){
+			printf("[ I ]	Arquivo 'AutomatoGoto.c' Gerado!	[ I ]\n");
+		}else{
+			printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
+		}
+		
 	}
 	else if(fugo==1){
 		FILE *sc=fopen("AutomatoFunc.c", "w");
@@ -263,59 +265,53 @@ int main(int argc, char *argv[]) {
 			fprintf(sc,"void e%d(){ \n",i);	
 			
 			int final=0;
+			int nescr =0;
+			int jfp=0;		//variavel importante! caso seja estado final o primeiro if não sera de rejeição caso a sentença acabe
+							//logo, esta variavel é um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
+							
+			//For para verificar se o estado atual é final!!!
 			for(final=0;final<qtdfin;final++){	
-				if(i!=fin[final]){
-					fprintf(sc,"	");
-					fprintf(sc,"if(stc[p]==0){\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"rejeita(); \n");
-					fprintf(sc,"	");
-					fprintf(sc,"}\n \n");
-					final=qtdfin;
+				if(i==fin[final]){		
+					nescr++;
 				}
 			}
 			
-			
-			/*
-			int final=0;
-			int fz=1;
-			while(fz != 0){
-				final++;
-				if(i!=fin[final]){
-					fz =0;
-					fprintf(sc,"	");
-					fprintf(sc,"if(stc[p]==0){\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"rejeita(); \n");
-					fprintf(sc,"	");
-					fprintf(sc,"}\n \n");
+			//Caso nao seja estado final, fazer p==0 -> rejeita
+			if(nescr == 0){
+				fprintf(sc,"	");
+				fprintf(sc,"if(stc[p]==0){\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"rejeita(); \n");
+				fprintf(sc,"	");
+				fprintf(sc,"}\n \n");
+			}
+			//Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
+			else if(nescr==1){
+				for(j=0;j<numsimb;j++){
+					if(reg[i][j]!=(-1)){
+						jfp=1;
+						fprintf(sc,"	");
+						fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+						fprintf(sc,"	");
+						fprintf(sc,"	");
+						fprintf(sc,"p++;\n");
+						fprintf(sc,"	");
+						fprintf(sc,"	");
+						fprintf(sc,"e%d();\n",reg[i][j]);
+						fprintf(sc,"	");
+						fprintf(sc,"} \n \n");
+						j=200;
+					} 	
 				}
+				
 			}
-			*/
-			/*for para fazer primeiro if
-			for(j=0;j<numsimb;j++){
-				if(reg[i][j]!=(-1)){
-					fprintf(sc,"	");
-					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"p++;\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"e%d();\n",reg[i][j]);
-					fprintf(sc,"	");
-					fprintf(sc,"} \n \n");
-					j=200;
-				} 	
-			}
-			*/
+			
+			
 			
 			//For para fazer else if apos o primeiro if
-	
 			for(j=0;j<numsimb;j++){	
-				if(reg[i][j]!=(-1)){
+				if(reg[i][j]!=(-1) && jfp ==0){
 					fprintf(sc,"	");
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
@@ -327,9 +323,13 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"	");
 					fprintf(sc,"} \n \n");
 				}
+				//Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
+				else if(reg[i][j]!=(-1) && jfp ==1){
+					jfp=0;
+				}
 			}
 			
-			//For para fazer else apos o primeiro if
+			//For para fazer else de rejeição apos o primeiro if
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]==(-1)){
 					fprintf(sc,"	");
@@ -342,16 +342,15 @@ int main(int argc, char *argv[]) {
 				}
 			} 
 			
-			//For para fazer aceita();, caso seja estado final
-			for(final=0;final<qtdfin;final++){	
-				if(i==fin[final]){
-					fprintf(sc,"	");
-					fprintf(sc,"else\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"aceita();\n\n");
-				}
+			//For para fazer aceita(); caso seja estado final
+			if(nescr==1){
+				fprintf(sc,"	");
+				fprintf(sc,"else\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"aceita();\n\n");
 			}
+		
 			fprintf(sc,"} \n \n");
 		}
 		
@@ -373,11 +372,16 @@ int main(int argc, char *argv[]) {
 		fprintf(sc,"	");
 		fprintf(sc,"exit(0);\n");
 		fprintf(sc,"} \n \n");
-		fclose(sc);
+		if(fclose(sc)==0){
+			printf("[ I ]	Arquivo 'AutomatoFunc.c' Gerado!	[ I ]\n");
+		}else{
+			printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
+		}
+		
 	}
 	else if(fugo==3){
 		
-		//-------------------------------->>> AUTOMATO GOTO <<<--------------------------------------------------------------
+//------------------------------------------------------->>> AUTOMATO GOTO <<<-----------------------------------------------------------------------
 		FILE *sc=fopen("AutomatoGoto.c", "w");
 		fflush(sc);
 		
@@ -408,13 +412,17 @@ int main(int argc, char *argv[]) {
 			
 			int final=0;
 			int nescr =0;
-			int jfp=0;
+			int jfp=0;		//variavel importante! caso seja estado final o primeiro if não sera de rejeição caso a sentença acabe
+							//logo, esta variavel é um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
+			
+			//For para verificar se o estado atual é final!!!
 			for(final=0;final<qtdfin;final++){	
 				if(i==fin[final]){		
 					nescr++;
 				}
 			}
-			printf("nescr %d \n",nescr);
+			
+			//Caso nao seja estado final, fazer p==0 -> rejeita
 			if(nescr == 0){
 				fprintf(sc,"	");
 				fprintf(sc,"if(stc[p]==0){\n");
@@ -423,8 +431,9 @@ int main(int argc, char *argv[]) {
 				fprintf(sc,"goto REJEITA; \n");
 				fprintf(sc,"	");
 				fprintf(sc,"}\n \n");
-			}else if(nescr==1){
-				printf("entei no elseif: %d\n",nescr);
+			}
+			//Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
+			else if(nescr==1){
 				for(j=0;j<numsimb;j++){
 					if(reg[i][j]!=(-1)){
 						jfp=1;
@@ -443,40 +452,7 @@ int main(int argc, char *argv[]) {
 				}
 				
 			}
-			/*
-			
-			int fz=1;
-			while(fz != 0){
-				final++;
-				if(i!=fin[final]){
-					fz =0;
-					fprintf(sc,"	");
-					fprintf(sc,"if(stc[p]==0){\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"goto REJEITA; \n");
-					fprintf(sc,"	");
-					fprintf(sc,"}\n \n");
-				}
-			}
-				
-			//for para fazer primeiro if
-			for(j=0;j<numsimb;j++){
-				if(reg[i][j]!=(-1)){
-					fprintf(sc,"	");
-					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"p++;\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"goto E%d;\n",reg[i][j]);
-					fprintf(sc,"	");
-					fprintf(sc,"} \n \n");
-					j=200;
-				} 	
-			}
-			*/
+	
 			//For para fazer else if apos o primeiro if
 			for(j=0;j<numsimb;j++){	
 				if(reg[i][j]!=(-1) && jfp==0){
@@ -490,7 +466,9 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"goto E%d;\n",reg[i][j]);
 					fprintf(sc,"	");
 					fprintf(sc,"} \n \n");
-				}else if(reg[i][j]!=(-1) && jfp==1){
+				}
+				//Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
+				else if(reg[i][j]!=(-1) && jfp==1){
 					jfp=0;
 				}
 			}
@@ -507,8 +485,8 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"} \n \n");
 				}
 			} 
-			//For para fazer goto ACEITA, caso seja estado final
 			
+			//For para fazer goto ACEITA, caso seja estado final
 			if(nescr==1){
 				fprintf(sc,"	");
 				fprintf(sc,"else\n");
@@ -537,10 +515,14 @@ int main(int argc, char *argv[]) {
 			
 		//fechamento main e fechamento arquivo.c
 		fprintf(sc,"} ");
-		fclose(sc);
+		if(fclose(sc)==0){
+			printf("[ I ]	Arquivo 'AutomatoGoto.c' Gerado!	[ I ]\n");
+		}else{
+			printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
+		}
 		
-		//-------------------------------->>> AUTOMATO FUNÇÃO <<<------------------------------------------------------------
-		
+//------------------------------------------------------->>> AUTOMATO FUNÇÃO <<<-----------------------------------------------------------------------
+	
 		sc=fopen("AutomatoFunc.c", "w");
 		fflush(sc);
 
@@ -582,13 +564,17 @@ int main(int argc, char *argv[]) {
 			
 			int final=0;
 			int nescr =0;
-			int jfp=0;
+			int jfp=0;		//variavel importante! caso seja estado final o primeiro if não sera de rejeição caso a sentença acabe
+							//logo, esta variavel é um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
+							
+			//For para verificar se o estado atual é final!!!
 			for(final=0;final<qtdfin;final++){	
 				if(i==fin[final]){		
 					nescr++;
 				}
 			}
-			printf("nescr %d \n",nescr);
+			
+			//Caso nao seja estado final, fazer p==0 -> rejeita
 			if(nescr == 0){
 				fprintf(sc,"	");
 				fprintf(sc,"if(stc[p]==0){\n");
@@ -597,8 +583,9 @@ int main(int argc, char *argv[]) {
 				fprintf(sc,"rejeita(); \n");
 				fprintf(sc,"	");
 				fprintf(sc,"}\n \n");
-			}else if(nescr==1){
-				printf("entei no elseif: %d\n",nescr);
+			}
+			//Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
+			else if(nescr==1){
 				for(j=0;j<numsimb;j++){
 					if(reg[i][j]!=(-1)){
 						jfp=1;
@@ -619,40 +606,6 @@ int main(int argc, char *argv[]) {
 			}
 			
 			
-			/*
-			int final=0;
-			int fz=1;
-			while(fz != 0){
-				final++;
-				if(i!=fin[final]){
-					fz =0;
-					fprintf(sc,"	");
-					fprintf(sc,"if(stc[p]==0){\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"rejeita(); \n");
-					fprintf(sc,"	");
-					fprintf(sc,"}\n \n");
-				}
-			}
-			*/
-			/*for para fazer primeiro if
-			for(j=0;j<numsimb;j++){
-				if(reg[i][j]!=(-1)){
-					fprintf(sc,"	");
-					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"p++;\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"e%d();\n",reg[i][j]);
-					fprintf(sc,"	");
-					fprintf(sc,"} \n \n");
-					j=200;
-				} 	
-			}
-			*/
 			
 			//For para fazer else if apos o primeiro if
 			for(j=0;j<numsimb;j++){	
@@ -667,12 +620,14 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"e%d();\n",reg[i][j]);
 					fprintf(sc,"	");
 					fprintf(sc,"} \n \n");
-				}else if(reg[i][j]!=(-1) && jfp ==1){
+				}
+				//Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
+				else if(reg[i][j]!=(-1) && jfp ==1){
 					jfp=0;
 				}
 			}
 			
-			//For para fazer else apos o primeiro if
+			//For para fazer else de rejeição apos o primeiro if
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]==(-1)){
 					fprintf(sc,"	");
@@ -685,7 +640,7 @@ int main(int argc, char *argv[]) {
 				}
 			} 
 			
-			//For para fazer aceita();, caso seja estado final
+			//For para fazer aceita(); caso seja estado final
 			if(nescr==1){
 				fprintf(sc,"	");
 				fprintf(sc,"else\n");
@@ -715,7 +670,12 @@ int main(int argc, char *argv[]) {
 		fprintf(sc,"	");
 		fprintf(sc,"exit(0);\n");
 		fprintf(sc,"} \n \n");
-		fclose(sc);
+		if(fclose(sc)==0){
+			printf("[ I ]	Arquivo 'AutomatoFunc.c' Gerado!	[ I ]\n");
+		}else{
+			printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
+		}
+		
 	}
 	
 	return 0;
