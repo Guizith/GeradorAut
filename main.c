@@ -11,17 +11,18 @@
 
 int main(int argc, char *argv[]) {
 	
+	//Variaveis de informações do automato
 	int i,j;
-	int numsimb = 0;
-	char simb[100];
-	int est=0;
-	int estini =0;
-	int qtdfin=0;
-	int fin[100];
-	int fugo=0;
+	int numsimb = 0; 	//Qtd simbolos no alfabeto
+	char simb[100];		//Alfabeto
+	int est=0;			//Estados
+	int estini =0;		//Estado inicial
+	int qtdfin=0;		//Qtd estados finais
+	int fin[100];		//Estados finais
+	int fugo=0;			//decisao para gerar função ou goto
 	
 	
-
+	//Entrada de quantos e quais simbolos
 	printf("\n Quantos Simbolos?:");
 	scanf("%d",&numsimb);
 	for(i=0;i<numsimb;i++){
@@ -29,7 +30,7 @@ int main(int argc, char *argv[]) {
 		simb[i]=getche();
 	}
 	
-	
+	//Entrada de estado inicial, estados e estados finais
 	printf("\n Quantos Estados?:");
 	scanf("%d",&est);
 	printf("\n Qual o estado inicial?:");
@@ -41,7 +42,7 @@ int main(int argc, char *argv[]) {
 		scanf("%d",&fin[i]);
 	}
 	
-	
+	//Entrada da matriz de adjacencia das regras 
 	int reg [est][numsimb];
 	for(i=0;i<est;i++){
 		for(j=0;j<numsimb;j++){
@@ -50,6 +51,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	
+	//Entrada de decisção de como construir o automato
 	printf("\nComo voce quer que seja feito o codigo do automato: \n");
 	printf("Digite 1-Funcao\n");
 	printf("Digite 2-Goto\n");
@@ -57,7 +59,7 @@ int main(int argc, char *argv[]) {
 	scanf("%d",&fugo);
 	
 	/*
-	print regras
+	//print regras
 	for(i=0;i<est;i++){
 		for(j=0;j<numsimb;j++){
 				printf(" \n regra do estado %d , simb %c : %d  \n \n",i,simb[j],reg[i][j] );		
@@ -65,7 +67,7 @@ int main(int argc, char *argv[]) {
 	}
 	*/
 	/*
-	print estados
+	//print estados
 	printf("\n estados: %d", est);
 	printf("\n estados ini: %d", estini);
 	printf("\n estados fin: %d", qtdfin);
@@ -74,15 +76,17 @@ int main(int argc, char *argv[]) {
 	}
 	*/
 	/*
-	print afabeto
+	//print afabeto
 	printf("\nestados %d \n", numsimb);
 	for(i=0;i<numsimb;i++){
 		printf("\nsimbs:%s", simb);
 	}*/
-
+	
+	//Inicio de construção do codigo
 	if(fugo ==2){
 		FILE *sc=fopen("AutomatoGoto.c", "w");
 		fflush(sc);
+		
 		//inicializaão code goto
 		//fprintf(sc,"	");
 		fprintf(sc,"#include <stdio.h>\n");
@@ -108,11 +112,42 @@ int main(int argc, char *argv[]) {
 			fprintf(sc,"	");
 			fprintf(sc,"E%d:\n\n",i);
 			
+			int final=0;
+			for(final=0;final<qtdfin;final++){	
+				if(i!=fin[final]){
+					printf(sc,"	");
+					fprintf(sc,"if(stc[p]==0){\n");
+					fprintf(sc,"	");
+					fprintf(sc,"	");
+					fprintf(sc,"goto REJEITA; \n");
+					fprintf(sc,"	");
+					fprintf(sc,"}\n \n");
+					final=qtdfin;
+				}
+			}
+			
+			/*
+			
+			int fz=1;
+			while(fz != 0){
+				final++;
+				if(i!=fin[final]){
+					fz =0;
+					fprintf(sc,"	");
+					fprintf(sc,"if(stc[p]==0){\n");
+					fprintf(sc,"	");
+					fprintf(sc,"	");
+					fprintf(sc,"goto REJEITA; \n");
+					fprintf(sc,"	");
+					fprintf(sc,"}\n \n");
+				}
+			}
+				
 			//for para fazer primeiro if
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
-					fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
 					fprintf(sc,"p++;\n");
@@ -124,12 +159,11 @@ int main(int argc, char *argv[]) {
 					j=200;
 				} 	
 			}
-			
+			*/
 			//For para fazer else if apos o primeiro if
-			int ft = 1;
-			for(j=0;j<numsimb;j++){
-				printf("\n estado %d",i);	
-				if(reg[i][j]!=(-1) && ft == 0){
+	
+			for(j=0;j<numsimb;j++){	
+				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
@@ -140,8 +174,7 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"goto E%d;\n",reg[i][j]);
 					fprintf(sc,"	");
 					fprintf(sc,"} \n \n");
-				}else if(reg[i][j]!=(-1))
-					ft = 0;
+				}
 			}
 			
 			//For para fazer else apos o primeiro if
@@ -157,7 +190,7 @@ int main(int argc, char *argv[]) {
 				}
 			} 
 			//For para fazer goto ACEITA, caso seja estado final
-			int final;	
+				
 			for(final=0;final<qtdfin;final++){	
 				if(i==fin[final]){
 					fprintf(sc,"	");
@@ -201,10 +234,12 @@ int main(int argc, char *argv[]) {
 		fprintf(sc,"\n //Este codigo automato foi gerado pelo programa main.c\n");
 		fprintf(sc,"\n //Guilherme Henrique Moreira  22117039-2\n");
 		fprintf(sc,"\n //Compiladores Projeto1  Prof: Pier\n\n");
+		
 		//for declaração funcçoes estados
 		for(i=0;i<est;i++){
 			fprintf(sc,"void e%d();\n",i);
 		}
+		
 		//declaração aceita rejeita, char stc, int p
 		fprintf(sc,"void rejeita();\n",i);
 		fprintf(sc,"void aceita(); \n\n",i);
@@ -226,11 +261,44 @@ int main(int argc, char *argv[]) {
 		//Construção do automato funcao
 		for(i=0;i<est;i++){
 			fprintf(sc,"void e%d(){ \n",i);	
-			//for para fazer primeiro if
+			
+			int final=0;
+			for(final=0;final<qtdfin;final++){	
+				if(i!=fin[final]){
+					fprintf(sc,"	");
+					fprintf(sc,"if(stc[p]==0){\n");
+					fprintf(sc,"	");
+					fprintf(sc,"	");
+					fprintf(sc,"rejeita(); \n");
+					fprintf(sc,"	");
+					fprintf(sc,"}\n \n");
+					final=qtdfin;
+				}
+			}
+			
+			
+			/*
+			int final=0;
+			int fz=1;
+			while(fz != 0){
+				final++;
+				if(i!=fin[final]){
+					fz =0;
+					fprintf(sc,"	");
+					fprintf(sc,"if(stc[p]==0){\n");
+					fprintf(sc,"	");
+					fprintf(sc,"	");
+					fprintf(sc,"rejeita(); \n");
+					fprintf(sc,"	");
+					fprintf(sc,"}\n \n");
+				}
+			}
+			*/
+			/*for para fazer primeiro if
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
-					fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
 					fprintf(sc,"p++;\n");
@@ -242,12 +310,12 @@ int main(int argc, char *argv[]) {
 					j=200;
 				} 	
 			}
+			*/
 			
 			//For para fazer else if apos o primeiro if
-			int ft = 1;
-			for(j=0;j<numsimb;j++){
-				printf("\n estado %d",i);	
-				if(reg[i][j]!=(-1) && ft == 0){
+	
+			for(j=0;j<numsimb;j++){	
+				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
@@ -258,8 +326,7 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"e%d();\n",reg[i][j]);
 					fprintf(sc,"	");
 					fprintf(sc,"} \n \n");
-				}else if(reg[i][j]!=(-1))
-					ft = 0;
+				}
 			}
 			
 			//For para fazer else apos o primeiro if
@@ -274,8 +341,8 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"} \n \n");
 				}
 			} 
+			
 			//For para fazer aceita();, caso seja estado final
-			int final;	
 			for(final=0;final<qtdfin;final++){	
 				if(i==fin[final]){
 					fprintf(sc,"	");
@@ -310,9 +377,10 @@ int main(int argc, char *argv[]) {
 	}
 	else if(fugo==3){
 		
-		//AUTOMATO GOTO--------------------------------------------------------------
+		//-------------------------------->>> AUTOMATO GOTO <<<--------------------------------------------------------------
 		FILE *sc=fopen("AutomatoGoto.c", "w");
 		fflush(sc);
+		
 		//inicializaão code goto
 		//fprintf(sc,"	");
 		fprintf(sc,"#include <stdio.h>\n");
@@ -338,11 +406,65 @@ int main(int argc, char *argv[]) {
 			fprintf(sc,"	");
 			fprintf(sc,"E%d:\n\n",i);
 			
+			int final=0;
+			int nescr =0;
+			int jfp=0;
+			for(final=0;final<qtdfin;final++){	
+				if(i==fin[final]){		
+					nescr++;
+				}
+			}
+			printf("nescr %d \n",nescr);
+			if(nescr == 0){
+				fprintf(sc,"	");
+				fprintf(sc,"if(stc[p]==0){\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"goto REJEITA; \n");
+				fprintf(sc,"	");
+				fprintf(sc,"}\n \n");
+			}else if(nescr==1){
+				printf("entei no elseif: %d\n",nescr);
+				for(j=0;j<numsimb;j++){
+					if(reg[i][j]!=(-1)){
+						jfp=1;
+						fprintf(sc,"	");
+						fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+						fprintf(sc,"	");
+						fprintf(sc,"	");
+						fprintf(sc,"p++;\n");
+						fprintf(sc,"	");
+						fprintf(sc,"	");
+						fprintf(sc,"goto E%d;\n",reg[i][j]);
+						fprintf(sc,"	");
+						fprintf(sc,"} \n \n");
+						j=200;
+					} 	
+				}
+				
+			}
+			/*
+			
+			int fz=1;
+			while(fz != 0){
+				final++;
+				if(i!=fin[final]){
+					fz =0;
+					fprintf(sc,"	");
+					fprintf(sc,"if(stc[p]==0){\n");
+					fprintf(sc,"	");
+					fprintf(sc,"	");
+					fprintf(sc,"goto REJEITA; \n");
+					fprintf(sc,"	");
+					fprintf(sc,"}\n \n");
+				}
+			}
+				
 			//for para fazer primeiro if
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
-					fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
 					fprintf(sc,"p++;\n");
@@ -354,11 +476,10 @@ int main(int argc, char *argv[]) {
 					j=200;
 				} 	
 			}
-			
+			*/
 			//For para fazer else if apos o primeiro if
-			int ft = 1;
-			for(j=0;j<numsimb;j++){
-				if(reg[i][j]!=(-1) && ft == 0){
+			for(j=0;j<numsimb;j++){	
+				if(reg[i][j]!=(-1) && jfp==0){
 					fprintf(sc,"	");
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
@@ -369,8 +490,9 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"goto E%d;\n",reg[i][j]);
 					fprintf(sc,"	");
 					fprintf(sc,"} \n \n");
-				}else if(reg[i][j]!=(-1))
-					ft = 0;
+				}else if(reg[i][j]!=(-1) && jfp==1){
+					jfp=0;
+				}
 			}
 			
 			//For para fazer else apos o primeiro if
@@ -386,16 +508,15 @@ int main(int argc, char *argv[]) {
 				}
 			} 
 			//For para fazer goto ACEITA, caso seja estado final
-			int final;	
-			for(final=0;final<qtdfin;final++){	
-				if(i==fin[final]){
-					fprintf(sc,"	");
-					fprintf(sc,"else\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"goto ACEITA;\n \n");
-				}
+			
+			if(nescr==1){
+				fprintf(sc,"	");
+				fprintf(sc,"else\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"goto ACEITA;\n \n");
 			}
+		
 		}
 	
 	
@@ -412,13 +533,14 @@ int main(int argc, char *argv[]) {
 		fprintf(sc,"printf(\"aceita\"); \n");
 		fprintf(sc,"	");
 		fprintf(sc,"exit(0);\n \n ");
-					
+			
+			
 		//fechamento main e fechamento arquivo.c
 		fprintf(sc,"} ");
 		fclose(sc);
 		
+		//-------------------------------->>> AUTOMATO FUNÇÃO <<<------------------------------------------------------------
 		
-		//AUTOMATO FUNÇÃO --------------------------------------------------------
 		sc=fopen("AutomatoFunc.c", "w");
 		fflush(sc);
 
@@ -430,10 +552,12 @@ int main(int argc, char *argv[]) {
 		fprintf(sc,"\n //Este codigo automato foi gerado pelo programa main.c\n");
 		fprintf(sc,"\n //Guilherme Henrique Moreira  22117039-2\n");
 		fprintf(sc,"\n //Compiladores Projeto1  Prof: Pier\n\n");
+		
 		//for declaração funcçoes estados
 		for(i=0;i<est;i++){
 			fprintf(sc,"void e%d();\n",i);
 		}
+		
 		//declaração aceita rejeita, char stc, int p
 		fprintf(sc,"void rejeita();\n",i);
 		fprintf(sc,"void aceita(); \n\n",i);
@@ -455,11 +579,68 @@ int main(int argc, char *argv[]) {
 		//Construção do automato funcao
 		for(i=0;i<est;i++){
 			fprintf(sc,"void e%d(){ \n",i);	
-			//for para fazer primeiro if
+			
+			int final=0;
+			int nescr =0;
+			int jfp=0;
+			for(final=0;final<qtdfin;final++){	
+				if(i==fin[final]){		
+					nescr++;
+				}
+			}
+			printf("nescr %d \n",nescr);
+			if(nescr == 0){
+				fprintf(sc,"	");
+				fprintf(sc,"if(stc[p]==0){\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"rejeita(); \n");
+				fprintf(sc,"	");
+				fprintf(sc,"}\n \n");
+			}else if(nescr==1){
+				printf("entei no elseif: %d\n",nescr);
+				for(j=0;j<numsimb;j++){
+					if(reg[i][j]!=(-1)){
+						jfp=1;
+						fprintf(sc,"	");
+						fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+						fprintf(sc,"	");
+						fprintf(sc,"	");
+						fprintf(sc,"p++;\n");
+						fprintf(sc,"	");
+						fprintf(sc,"	");
+						fprintf(sc,"e%d();\n",reg[i][j]);
+						fprintf(sc,"	");
+						fprintf(sc,"} \n \n");
+						j=200;
+					} 	
+				}
+				
+			}
+			
+			
+			/*
+			int final=0;
+			int fz=1;
+			while(fz != 0){
+				final++;
+				if(i!=fin[final]){
+					fz =0;
+					fprintf(sc,"	");
+					fprintf(sc,"if(stc[p]==0){\n");
+					fprintf(sc,"	");
+					fprintf(sc,"	");
+					fprintf(sc,"rejeita(); \n");
+					fprintf(sc,"	");
+					fprintf(sc,"}\n \n");
+				}
+			}
+			*/
+			/*for para fazer primeiro if
 			for(j=0;j<numsimb;j++){
 				if(reg[i][j]!=(-1)){
 					fprintf(sc,"	");
-					fprintf(sc,"if(stc[p]=='%c'){ \n",simb[j]);
+					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
 					fprintf(sc,"	");
 					fprintf(sc,"p++;\n");
@@ -471,11 +652,11 @@ int main(int argc, char *argv[]) {
 					j=200;
 				} 	
 			}
+			*/
 			
 			//For para fazer else if apos o primeiro if
-			int ft = 1;
 			for(j=0;j<numsimb;j++){	
-				if(reg[i][j]!=(-1) && ft == 0){
+				if(reg[i][j]!=(-1) && jfp ==0){
 					fprintf(sc,"	");
 					fprintf(sc,"else if(stc[p]=='%c'){ \n",simb[j]);
 					fprintf(sc,"	");
@@ -486,8 +667,9 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"e%d();\n",reg[i][j]);
 					fprintf(sc,"	");
 					fprintf(sc,"} \n \n");
-				}else if(reg[i][j]!=(-1))
-					ft = 0;
+				}else if(reg[i][j]!=(-1) && jfp ==1){
+					jfp=0;
+				}
 			}
 			
 			//For para fazer else apos o primeiro if
@@ -502,17 +684,16 @@ int main(int argc, char *argv[]) {
 					fprintf(sc,"} \n \n");
 				}
 			} 
+			
 			//For para fazer aceita();, caso seja estado final
-			int final;	
-			for(final=0;final<qtdfin;final++){	
-				if(i==fin[final]){
-					fprintf(sc,"	");
-					fprintf(sc,"else\n");
-					fprintf(sc,"	");
-					fprintf(sc,"	");
-					fprintf(sc,"aceita();\n\n");
-				}
+			if(nescr==1){
+				fprintf(sc,"	");
+				fprintf(sc,"else\n");
+				fprintf(sc,"	");
+				fprintf(sc,"	");
+				fprintf(sc,"aceita();\n\n");
 			}
+		
 			fprintf(sc,"} \n \n");
 		}
 		
@@ -535,7 +716,6 @@ int main(int argc, char *argv[]) {
 		fprintf(sc,"exit(0);\n");
 		fprintf(sc,"} \n \n");
 		fclose(sc);
-		
 	}
 	
 	return 0;

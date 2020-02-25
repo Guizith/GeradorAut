@@ -29,7 +29,11 @@ int main(){
 }
 
 void e0(){ 
-	if(stc[p]=='d'){ 
+	if(stc[p]==0){
+		rejeita(); 
+	}
+ 
+	else if(stc[p]=='d'){ 
 		p++;
 		e3();
 	} 
@@ -49,7 +53,11 @@ void e0(){
 } 
  
 void e1(){ 
-	if(stc[p]=='a'){ 
+	if(stc[p]==0){
+		rejeita(); 
+	}
+ 
+	else if(stc[p]=='a'){ 
 		p++;
 		e2();
 	} 
@@ -70,7 +78,11 @@ void e1(){
 } 
  
 void e2(){ 
-	if(stc[p]=='a'){ 
+	if(stc[p]==0){
+		rejeita(); 
+	}
+ 
+	else if(stc[p]=='a'){ 
 		p++;
 		e4();
 	} 

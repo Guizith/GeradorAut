@@ -19,7 +19,11 @@ int main(){
 
 	E0:
 
-	if(stc[p]=='d'){ 
+	if(stc[p]==0){
+		goto REJEITA; 
+	}
+ 
+	else if(stc[p]=='d'){ 
 		p++;
 		goto E3;
 	} 
@@ -38,7 +42,11 @@ int main(){
  
 	E1:
 
-	if(stc[p]=='a'){ 
+	if(stc[p]==0){
+		goto REJEITA; 
+	}
+ 
+	else if(stc[p]=='a'){ 
 		p++;
 		goto E2;
 	} 
@@ -58,7 +66,11 @@ int main(){
  
 	E2:
 
-	if(stc[p]=='a'){ 
+	if(stc[p]==0){
+		goto REJEITA; 
+	}
+ 
+	else if(stc[p]=='a'){ 
 		p++;
 		goto E4;
 	} 
