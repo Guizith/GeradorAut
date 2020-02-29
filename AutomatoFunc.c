@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 
 
  //Este codigo automato foi gerado pelo programa main.c
@@ -12,9 +11,6 @@
 void e0();
 void e1();
 void e2();
-void e3();
-void e4();
-void e5();
 void rejeita();
 void aceita(); 
 
@@ -24,7 +20,7 @@ int p=0;
 int main(){ 
  
 	printf("digite a sentenca: "); 
-	gets(stc);
+	scanf("%c",stc);
 	e0(); 
 	return(0); 
 }
@@ -34,57 +30,32 @@ void e0(){
 		rejeita(); 
 	}
  
-	else if(stc[p]=='a'){ 
-		p++;
-		e4();
-	} 
- 
-	else if(stc[p]=='b'){ 
-		p++;
-		e3();
-	} 
- 
-	else if(stc[p]=='c'){ 
+       else if(stc[p]=='a'){ 
 		p++;
 		e1();
+	} 
+ 
+	else if(stc[p]=='b') { 
+		rejeita();
+	} 
+ 
+	else if(stc[p]=='c') { 
+		rejeita();
 	} 
  
 } 
  
 void e1(){ 
-	if(stc[p]==0){
-		rejeita(); 
-	}
- 
-	else if(stc[p]=='a'){ 
-		p++;
-		e4();
+	if(stc[p]=='a') { 
+		rejeita();
 	} 
  
-	else if(stc[p]=='b'){ 
+       else if(stc[p]=='b'){ 
 		p++;
-		e2();
+		e0();
 	} 
  
-	else if(stc[p]=='c'){ 
-		p++;
-		e1();
-	} 
- 
-} 
- 
-void e2(){ 
-	if(stc[p]=='a'){ 
-		p++;
-		e2();
-	} 
- 
-	else if(stc[p]=='b'){ 
-		p++;
-		e2();
-	} 
- 
-	else if(stc[p]=='c'){ 
+       else if(stc[p]=='c'){ 
 		p++;
 		e2();
 	} 
@@ -94,82 +65,32 @@ void e2(){
 
 } 
  
-void e3(){ 
-	if(stc[p]==0){
-		rejeita(); 
-	}
- 
-	else if(stc[p]=='a'){ 
-		p++;
-		e4();
+void e2(){ 
+	if(stc[p]=='a') { 
+		rejeita();
 	} 
  
-	else if(stc[p]=='b'){ 
-		p++;
-		e3();
+	else if(stc[p]=='b') { 
+		rejeita();
 	} 
  
-	else if(stc[p]=='c'){ 
-		p++;
-		e2();
+	else if(stc[p]=='c') { 
+		rejeita();
 	} 
  
-} 
- 
-void e4(){ 
-	if(stc[p]==0){
-		rejeita(); 
-	}
- 
-	else if(stc[p]=='a'){ 
-		p++;
-		e5();
-	} 
- 
-	else if(stc[p]=='b'){ 
-		p++;
-		e3();
-	} 
- 
-	else if(stc[p]=='c'){ 
-		p++;
-		e1();
-	} 
- 
-} 
- 
-void e5(){ 
-	if(stc[p]==0){
-		rejeita(); 
-	}
- 
-	else if(stc[p]=='a'){ 
-		p++;
-		e2();
-	} 
- 
-	else if(stc[p]=='b'){ 
-		p++;
-		e3();
-	} 
- 
-	else if(stc[p]=='c'){ 
-		p++;
-		e1();
-	} 
- 
+	else
+		aceita();
+
 } 
  
 void rejeita(){
 	printf("rejeita");
-	getch();
 	exit(0);
 
 } 
  
 void aceita(){
 	printf("aceita");
-	getch();
 	exit(0);
 } 
  

@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 
 
  //Este codigo automato foi gerado pelo programa main.c
@@ -14,7 +13,7 @@ int main(){
 	char stc[200]; 
 	int p=0; 
 	printf("digite a sentenca: "); 
-	gets(stc);
+	scanf("%c",stc);
 	goto E0; 
 
 	E0:
@@ -25,50 +24,26 @@ int main(){
  
 	else if(stc[p]=='a'){ 
 		p++;
-		goto E4;
-	} 
- 
-	else if(stc[p]=='b'){ 
-		p++;
-		goto E3;
-	} 
- 
-	else if(stc[p]=='c'){ 
-		p++;
 		goto E1;
+	} 
+ 
+	else if(stc[p]=='b') { 
+		goto REJEITA;
+	} 
+ 
+	else if(stc[p]=='c') { 
+		goto REJEITA;
 	} 
  
 	E1:
 
-	if(stc[p]==0){
-		goto REJEITA; 
-	}
- 
-	else if(stc[p]=='a'){ 
-		p++;
-		goto E4;
+	if(stc[p]=='a') { 
+		goto REJEITA;
 	} 
  
 	else if(stc[p]=='b'){ 
 		p++;
-		goto E2;
-	} 
- 
-	else if(stc[p]=='c'){ 
-		p++;
-		goto E1;
-	} 
- 
-	E2:
-
-	if(stc[p]=='a'){ 
-		p++;
-		goto E2;
-	} 
- 
-	else if(stc[p]=='b'){ 
-		p++;
-		goto E2;
+		goto E0;
 	} 
  
 	else if(stc[p]=='c'){ 
@@ -79,68 +54,22 @@ int main(){
 	else
 		goto ACEITA;
  
-	E3:
+	E2:
 
-	if(stc[p]==0){
-		goto REJEITA; 
-	}
- 
-	else if(stc[p]=='a'){ 
-		p++;
-		goto E4;
+	if(stc[p]=='a') { 
+		goto REJEITA;
 	} 
  
-	else if(stc[p]=='b'){ 
-		p++;
-		goto E3;
+	else if(stc[p]=='b') { 
+		goto REJEITA;
 	} 
  
-	else if(stc[p]=='c'){ 
-		p++;
-		goto E2;
+	else if(stc[p]=='c') { 
+		goto REJEITA;
 	} 
  
-	E4:
-
-	if(stc[p]==0){
-		goto REJEITA; 
-	}
- 
-	else if(stc[p]=='a'){ 
-		p++;
-		goto E5;
-	} 
- 
-	else if(stc[p]=='b'){ 
-		p++;
-		goto E3;
-	} 
- 
-	else if(stc[p]=='c'){ 
-		p++;
-		goto E1;
-	} 
- 
-	E5:
-
-	if(stc[p]==0){
-		goto REJEITA; 
-	}
- 
-	else if(stc[p]=='a'){ 
-		p++;
-		goto E2;
-	} 
- 
-	else if(stc[p]=='b'){ 
-		p++;
-		goto E3;
-	} 
- 
-	else if(stc[p]=='c'){ 
-		p++;
-		goto E1;
-	} 
+	else
+		goto ACEITA;
  
 	REJEITA:
 	printf("rejeita"); 

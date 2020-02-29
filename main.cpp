@@ -91,8 +91,7 @@ int main(int argc, char *argv[]) {
         //inicializacao code goto
         //fprintf(sc,"	");
         fprintf(sc, "#include <stdio.h>\n");
-        fprintf(sc, "#include <stdlib.h>\n");
-        fprintf(sc, "#include <conio.h>\n\n");
+        fprintf(sc, "#include <stdlib.h>\n\n");
         fprintf(sc, "\n //Este codigo automato foi gerado pelo programa main.c\n");
         fprintf(sc, "\n //Guilherme Henrique Moreira  22117039-2\n");
         fprintf(sc, "\n //Compiladores Projeto1  Prof: Pier\n\n");
@@ -104,7 +103,7 @@ int main(int argc, char *argv[]) {
         fprintf(sc, "	");
         fprintf(sc, "printf(\"digite a sentenca: \"); \n");
         fprintf(sc, "	");
-        fprintf(sc, "gets(stc);\n");
+        fprintf(sc, "scanf(\"%%c\",stc);\n");
         fprintf(sc, "	");
         fprintf(sc, "goto E%d; \n\n", estini);
 
@@ -114,10 +113,13 @@ int main(int argc, char *argv[]) {
             fprintf(sc, "E%d:\n\n", i);
 
             int final = 0;
-            int nescr = 0;
-            int jfp = 0; //variavel importante! caso seja estado final o primeiro if nao sera de rejeicao caso a sentenca acabe
-            //logo, esta variavel eh um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
+            int nescr = 0;//Variavel de controle de estado final
 
+            //variaveis importantes! caso seja estado final o primeiro if nao sera de rejeicao caso a sentenca acabe
+            //logo, estas variaveis sao um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
+            int jfp = 0;//Caso !=(-1)
+            int jfd = 0;//Caso ==(-1)
+            
             //For para verificar se o estado atual eh final!!!
             for (final = 0; final<qtdfin; final++) {
                 if (i == fin[final]) {
@@ -154,7 +156,7 @@ int main(int argc, char *argv[]) {
                     }  
                     //Primeiro if para rejeita(caso de uso: estado final que nao recebe nenhum simbolo)
                     else if (reg[i][j] == (-1)) {
-                        jfp = 1;
+                        jfd = 1;
                         fprintf(sc, "	");
                         fprintf(sc, "if(stc[p]=='%c') { \n", simb[j]);
                         fprintf(sc, "	");
@@ -181,7 +183,7 @@ int main(int argc, char *argv[]) {
                     fprintf(sc, "	");
                     fprintf(sc, "} \n \n");
                 }  
-                //Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
+                //Caso o primeiro if ja tenho sido feito(jfp) escrever apenas os proximos 
                 else if (reg[i][j] != (-1) && jfp == 1) {
                     jfp = 0;
                 }
@@ -189,7 +191,7 @@ int main(int argc, char *argv[]) {
 
             //For para fazer else apos o primeiro if
             for (j = 0; j < numsimb; j++) {
-                if (reg[i][j] == (-1) && jfp == 0) {
+                if (reg[i][j] == (-1) && jfd == 0) {
                     fprintf(sc, "	");
                     fprintf(sc, "else if(stc[p]=='%c') { \n", simb[j]);
                     fprintf(sc, "	");
@@ -197,8 +199,10 @@ int main(int argc, char *argv[]) {
                     fprintf(sc, "goto REJEITA;\n");
                     fprintf(sc, "	");
                     fprintf(sc, "} \n \n");
-                } else if (reg[i][j] == (-1) && jfp == 1) {
-                    jfp = 0;
+                }
+                //Caso o primeiro if ja tenho sido feito(jfd) escrever apenas os proximos 
+                else if (reg[i][j] == (-1) && jfd == 1) {
+                    jfd = 0;
                 }
             }
 
@@ -244,8 +248,7 @@ int main(int argc, char *argv[]) {
         //inicializacao code funcao
         //fprintf(sc,"	");
         fprintf(sc, "#include <stdio.h>\n");
-        fprintf(sc, "#include <stdlib.h>\n");
-        fprintf(sc, "#include <conio.h>\n\n");
+        fprintf(sc, "#include <stdlib.h>\n\n");
         fprintf(sc, "\n //Este codigo automato foi gerado pelo programa main.c\n");
         fprintf(sc, "\n //Guilherme Henrique Moreira  22117039-2\n");
         fprintf(sc, "\n //Compiladores Projeto1  Prof: Pier\n\n");
@@ -266,7 +269,7 @@ int main(int argc, char *argv[]) {
         fprintf(sc, "	");
         fprintf(sc, "printf(\"digite a sentenca: \"); \n");
         fprintf(sc, "	");
-        fprintf(sc, "gets(stc);\n");
+        fprintf(sc, "scanf(\"%%c\",stc);\n");
         fprintf(sc, "	");
         fprintf(sc, "e%d(); \n", estini);
         fprintf(sc, "	");
@@ -279,334 +282,12 @@ int main(int argc, char *argv[]) {
 
             int final = 0;
             int nescr = 0;
-            int jfp = 0; //variavel importante! caso seja estado final o primeiro if nao sera de rejeicao caso a sentenca acabe
-            //logo, esta variavel eh um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
-
-            //For para verificar se o estado atual eh final!!!
-            for (final = 0; final<qtdfin; final++) {
-                if (i == fin[final]) {
-                    nescr++;
-                }
-            }
-
-            //Caso nao seja estado final, fazer p==0 -> rejeita
-            if (nescr == 0) {
-                fprintf(sc, "	");
-                fprintf(sc, "if(stc[p]==0){\n");
-                fprintf(sc, "	");
-                fprintf(sc, "	");
-                fprintf(sc, "rejeita(); \n");
-                fprintf(sc, "	");
-                fprintf(sc, "}\n \n");
-            }
-            //Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
-            else if (nescr == 1) {
-                for (j = 0; j < numsimb; j++) {
-                    if (reg[i][j] != (-1)) {
-                        jfp = 1;
-                        fprintf(sc, "	");
-                        fprintf(sc, "if(stc[p]=='%c'){ \n", simb[j]);
-                        fprintf(sc, "	");
-                        fprintf(sc, "	");
-                        fprintf(sc, "p++;\n");
-                        fprintf(sc, "	");
-                        fprintf(sc, "	");
-                        fprintf(sc, "e%d();\n", reg[i][j]);
-                        fprintf(sc, "	");
-                        fprintf(sc, "} \n \n");
-                        j = 200;
-                    }
-                    //Primeiro if para rejeita(caso de uso: estado final que nao recebe nenhum simbolo)
-                    else if (reg[i][j] == (-1)) {
-                        jfp = 1;
-                        fprintf(sc, "	");
-                        fprintf(sc, "if(stc[p]=='%c') { \n", simb[j]);
-                        fprintf(sc, "	");
-                        fprintf(sc, "	");
-                        fprintf(sc, "goto rejeita();\n");
-                        fprintf(sc, "	");
-                        fprintf(sc, "} \n \n");
-                        j = 200;
-                    }
-                }
-
-            }
-
-
-
-            //For para fazer else if apos o primeiro if
-            for (j = 0; j < numsimb; j++) {
-                if (reg[i][j] != (-1) && jfp == 0) {
-                    fprintf(sc, "       ");
-                    fprintf(sc, "else if(stc[p]=='%c'){ \n", simb[j]);
-                    fprintf(sc, "	");
-                    fprintf(sc, "	");
-                    fprintf(sc, "p++;\n");
-                    fprintf(sc, "	");
-                    fprintf(sc, "	");
-                    fprintf(sc, "e%d();\n", reg[i][j]);
-                    fprintf(sc, "	");
-                    fprintf(sc, "} \n \n");
-                }  
-                //Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
-                else if (reg[i][j] != (-1) && jfp == 1) {
-                    jfp = 0;
-                }
-            }
-
-            //For para fazer else de rejeicao apos o primeiro if
-            for (j = 0; j < numsimb; j++) {
-                printf("For para fazer o else estado:%d , valor de jfp: %d\n",i,jfp);
-                if (reg[i][j] == (-1) && jfp==0) {
-                    fprintf(sc, "	");
-                    fprintf(sc, "else if(stc[p]=='%c') { \n", simb[j]);
-                    fprintf(sc, "	");
-                    fprintf(sc, "	");
-                    fprintf(sc, "rejeita();\n");
-                    fprintf(sc, "	");
-                    fprintf(sc, "} \n \n");
-                }
-                //Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
-                else if (reg[i][j] == (-1) && jfp == 1) {
-                    jfp = 0;
-                }
-            }
-
-            //For para fazer aceita(); caso seja estado final
-            if (nescr == 1) {
-                fprintf(sc, "	");
-                fprintf(sc, "else\n");
-                fprintf(sc, "	");
-                fprintf(sc, "	");
-                fprintf(sc, "aceita();\n\n");
-            }
-
-            fprintf(sc, "} \n \n");
-        }
-
-
-        //aceita e rejeita
-        fprintf(sc, "void rejeita(){\n");
-        fprintf(sc, "	");
-        fprintf(sc, "printf(\"rejeita\");\n");
-        fprintf(sc, "	");
-        fprintf(sc, "getch();\n");
-        fprintf(sc, "	");
-        fprintf(sc, "exit(0);\n\n");
-        fprintf(sc, "} \n \n");
-        fprintf(sc, "void aceita(){\n");
-        fprintf(sc, "	");
-        fprintf(sc, "printf(\"aceita\");\n");
-        fprintf(sc, "	");
-        fprintf(sc, "getch();\n");
-        fprintf(sc, "	");
-        fprintf(sc, "exit(0);\n");
-        fprintf(sc, "} \n \n");
-        if (fclose(sc) == 0) {
-            printf("[ I ]	Arquivo 'AutomatoFunc.c' Gerado!	[ I ]\n");
-        } else {
-            printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
-        }
-
-    } else if (fugo == 3) {
-
-        //------------------------------------------------------->>> AUTOMATO GOTO <<<-----------------------------------------------------------------------
-       FILE *sc = fopen("AutomatoGoto.c", "w");
-        fflush(sc);
-
-        //inicializacao code goto
-        //fprintf(sc,"	");
-        fprintf(sc, "#include <stdio.h>\n");
-        fprintf(sc, "#include <stdlib.h>\n");
-        fprintf(sc, "#include <conio.h>\n\n");
-        fprintf(sc, "\n //Este codigo automato foi gerado pelo programa main.c\n");
-        fprintf(sc, "\n //Guilherme Henrique Moreira  22117039-2\n");
-        fprintf(sc, "\n //Compiladores Projeto1  Prof: Pier\n\n");
-        fprintf(sc, "int main(){ \n \n");
-        fprintf(sc, "	");
-        fprintf(sc, "char stc[200]; \n");
-        fprintf(sc, "	");
-        fprintf(sc, "int p=0; \n");
-        fprintf(sc, "	");
-        fprintf(sc, "printf(\"digite a sentenca: \"); \n");
-        fprintf(sc, "	");
-        fprintf(sc, "gets(stc);\n");
-        fprintf(sc, "	");
-        fprintf(sc, "goto E%d; \n\n", estini);
-
-        //construcao do automato goto
-        for (i = 0; i < est; i++) {
-            fprintf(sc, "	");
-            fprintf(sc, "E%d:\n\n", i);
-
-            int final = 0;
-            int nescr = 0;
-            int jfp = 0; //variavel importante! caso seja estado final o primeiro if nao sera de rejeicao caso a sentenca acabe
-            //logo, esta variavel eh um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
-
-            //For para verificar se o estado atual eh final!!!
-            for (final = 0; final<qtdfin; final++) {
-                if (i == fin[final]) {
-                    nescr++;
-                }
-            }
-            //Caso nao seja estado final, fazer p==0 -> rejeita
-            if (nescr == 0) {
-                fprintf(sc, "	");
-                fprintf(sc, "if(stc[p]==0){\n");
-                fprintf(sc, "	");
-                fprintf(sc, "	");
-                fprintf(sc, "goto REJEITA; \n");
-                fprintf(sc, "	");
-                fprintf(sc, "}\n \n");
-            }
-            //Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
-            else if (nescr == 1) {
-                for (j = 0; j < numsimb; j++) {
-                    //Primeiro if para aceita
-                    if (reg[i][j] != (-1)) {
-                        jfp = 1;
-                        fprintf(sc, "	");
-                        fprintf(sc, "if(stc[p]=='%c'){ \n", simb[j]);
-                        fprintf(sc, "	");
-                        fprintf(sc, "	");
-                        fprintf(sc, "p++;\n");
-                        fprintf(sc, "	");
-                        fprintf(sc, "	");
-                        fprintf(sc, "goto E%d;\n", reg[i][j]);
-                        fprintf(sc, "	");
-                        fprintf(sc, "} \n \n");
-                        j = 200;
-                    }  
-                    //Primeiro if para rejeita(caso de uso: estado final que nao recebe nenhum simbolo)
-                    else if (reg[i][j] == (-1)) {
-                        jfp = 1;
-                        fprintf(sc, "	");
-                        fprintf(sc, "if(stc[p]=='%c') { \n", simb[j]);
-                        fprintf(sc, "	");
-                        fprintf(sc, "	");
-                        fprintf(sc, "goto REJEITA;\n");
-                        fprintf(sc, "	");
-                        fprintf(sc, "} \n \n");
-                        j = 200;
-                    }
-                }
-            }
-
-            //For para fazer else if apos o primeiro if
-            for (j = 0; j < numsimb; j++) {
-                if (reg[i][j] != (-1) && jfp == 0) {
-                    fprintf(sc, "	");
-                    fprintf(sc, "else if(stc[p]=='%c'){ \n", simb[j]);
-                    fprintf(sc, "	");
-                    fprintf(sc, "	");
-                    fprintf(sc, "p++;\n");
-                    fprintf(sc, "	");
-                    fprintf(sc, "	");
-                    fprintf(sc, "goto E%d;\n", reg[i][j]);
-                    fprintf(sc, "	");
-                    fprintf(sc, "} \n \n");
-                }  
-                //Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
-                else if (reg[i][j] != (-1) && jfp == 1) {
-                    jfp = 0;
-                }
-            }
-
-            //For para fazer else apos o primeiro if
-            for (j = 0; j < numsimb; j++) {
-                if (reg[i][j] == (-1) && jfp == 0) {
-                    fprintf(sc, "	");
-                    fprintf(sc, "else if(stc[p]=='%c') { \n", simb[j]);
-                    fprintf(sc, "	");
-                    fprintf(sc, "	");
-                    fprintf(sc, "goto REJEITA;\n");
-                    fprintf(sc, "	");
-                    fprintf(sc, "} \n \n");
-                } else if (reg[i][j] == (-1) && jfp == 1) {
-                    jfp = 0;
-                }
-            }
-
-            //For para fazer goto ACEITA, caso seja estado final
-            if (nescr == 1) {
-                fprintf(sc, "	");
-                fprintf(sc, "else\n");
-                fprintf(sc, "	");
-                fprintf(sc, "	");
-                fprintf(sc, "goto ACEITA;\n \n");
-            }
-
-        }
-
-
-        //aceita e rejeita
-        fprintf(sc, "	");
-        fprintf(sc, "REJEITA:\n");
-        fprintf(sc, "	");
-        fprintf(sc, "printf(\"rejeita\"); \n");
-        fprintf(sc, "	");
-        fprintf(sc, "exit(0);\n \n ");
-        fprintf(sc, "	");
-        fprintf(sc, "ACEITA:\n");
-        fprintf(sc, "	");
-        fprintf(sc, "printf(\"aceita\"); \n");
-        fprintf(sc, "	");
-        fprintf(sc, "exit(0);\n \n ");
-
-
-        //fechamento main e fechamento arquivo.c
-        fprintf(sc, "} ");
-        if (fclose(sc) == 0) {
-            printf("[ I ]	Arquivo 'AutomatoGoto.c' Gerado!	[ I ]\n");
-        } else {
-            printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
-        }
-        //------------------------------------------------------->>> AUTOMATO FUNCAO <<<----------------------------------------------------------------------
-        sc = fopen("AutomatoFunc.c", "w");
-        fflush(sc);
-
-        //inicializacao code funcao
-        //fprintf(sc,"	");
-        fprintf(sc, "#include <stdio.h>\n");
-        fprintf(sc, "#include <stdlib.h>\n");
-        fprintf(sc, "#include <conio.h>\n\n");
-        fprintf(sc, "\n //Este codigo automato foi gerado pelo programa main.c\n");
-        fprintf(sc, "\n //Guilherme Henrique Moreira  22117039-2\n");
-        fprintf(sc, "\n //Compiladores Projeto1  Prof: Pier\n\n");
-
-        //for declaracao funcoes estados
-        for (i = 0; i < est; i++) {
-            fprintf(sc, "void e%d();\n", i);
-        }
-
-        //declaracao aceita rejeita, char stc, int p
-        fprintf(sc, "void rejeita();\n");
-        fprintf(sc, "void aceita(); \n\n");
-        fprintf(sc, "char stc[200]; \n");
-        fprintf(sc, "int p=0; \n\n");
-
-        //int main e chamada e inicio automato
-        fprintf(sc, "int main(){ \n \n");
-        fprintf(sc, "	");
-        fprintf(sc, "printf(\"digite a sentenca: \"); \n");
-        fprintf(sc, "	");
-        fprintf(sc, "gets(stc);\n");
-        fprintf(sc, "	");
-        fprintf(sc, "e%d(); \n", estini);
-        fprintf(sc, "	");
-        fprintf(sc, "return(0); \n");
-        fprintf(sc, "}\n\n");
-
-        //Construcao do automato funcao
-        for (i = 0; i < est; i++) {
-            fprintf(sc, "void e%d(){ \n", i);
-
-            int final = 0;
-            int nescr = 0;
-            int jfp = 0; //variavel importante! caso seja estado final o primeiro if nao sera de rejeicao caso a sentenca acabe
-            int jfd = 0;//logo, esta variavel eh um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
-
+            
+            //variaveis importantes! caso seja estado final o primeiro if nao sera de rejeicao caso a sentenca acabe
+            //logo, estas variaveis sao um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
+            int jfp = 0;//Caso !=(-1)
+            int jfd = 0;//Caso ==(-1)
+            
             //For para verificar se o estado atual eh final!!!
             for (final = 0; final<qtdfin; final++) {
                 if (i == fin[final]) {
@@ -648,7 +329,7 @@ int main(int argc, char *argv[]) {
                         fprintf(sc, "if(stc[p]=='%c') { \n", simb[j]);
                         fprintf(sc, "	");
                         fprintf(sc, "	");
-                        fprintf(sc, "goto rejeita();\n");
+                        fprintf(sc, "rejeita();\n");
                         fprintf(sc, "	");
                         fprintf(sc, "} \n \n");
                         j = 200;
@@ -657,12 +338,10 @@ int main(int argc, char *argv[]) {
 
             }
 
-
-
             //For para fazer else if apos o primeiro if
             for (j = 0; j < numsimb; j++) {
                 if (reg[i][j] != (-1) && jfp == 0) {
-                    fprintf(sc, "	");
+                    fprintf(sc, "       ");
                     fprintf(sc, "else if(stc[p]=='%c'){ \n", simb[j]);
                     fprintf(sc, "	");
                     fprintf(sc, "	");
@@ -673,15 +352,15 @@ int main(int argc, char *argv[]) {
                     fprintf(sc, "	");
                     fprintf(sc, "} \n \n");
                 }  
-                //Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
+                //Caso o primeiro if ja tenho sido feito(jfp) escrever apenas os proximos 
                 else if (reg[i][j] != (-1) && jfp == 1) {
                     jfp = 0;
                 }
             }
 
             //For para fazer else de rejeicao apos o primeiro if
-            for (j = 0; j < numsimb; j++ && jfd==0) {
-                if (reg[i][j] == (-1)) {
+            for (j = 0; j < numsimb; j++) {
+                if (reg[i][j] == (-1) && jfd==0) {
                     fprintf(sc, "	");
                     fprintf(sc, "else if(stc[p]=='%c') { \n", simb[j]);
                     fprintf(sc, "	");
@@ -690,7 +369,7 @@ int main(int argc, char *argv[]) {
                     fprintf(sc, "	");
                     fprintf(sc, "} \n \n");
                 }
-                //Caso o primeiro if ja tenho sido feito(jpf) escrever apenas os proximos 
+                //Caso o primeiro if ja tenho sido feito(jfd) escrever apenas os proximos 
                 else if (reg[i][j] == (-1) && jfd == 1) {
                     jfd = 0;
                 }
@@ -714,15 +393,11 @@ int main(int argc, char *argv[]) {
         fprintf(sc, "	");
         fprintf(sc, "printf(\"rejeita\");\n");
         fprintf(sc, "	");
-        fprintf(sc, "getch();\n");
-        fprintf(sc, "	");
         fprintf(sc, "exit(0);\n\n");
         fprintf(sc, "} \n \n");
         fprintf(sc, "void aceita(){\n");
         fprintf(sc, "	");
         fprintf(sc, "printf(\"aceita\");\n");
-        fprintf(sc, "	");
-        fprintf(sc, "getch();\n");
         fprintf(sc, "	");
         fprintf(sc, "exit(0);\n");
         fprintf(sc, "} \n \n");
@@ -731,6 +406,334 @@ int main(int argc, char *argv[]) {
         } else {
             printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
         }
+
+    } else if (fugo == 3) {
+
+        //------------------------------------------------------->>> AUTOMATO GOTO <<<-----------------------------------------------------------------------
+        FILE *sc = fopen("AutomatoGoto.c", "w");
+        fflush(sc);
+
+        //inicializacao code goto
+        //fprintf(sc,"	");
+        fprintf(sc, "#include <stdio.h>\n");
+        fprintf(sc, "#include <stdlib.h>\n\n");
+        fprintf(sc, "\n //Este codigo automato foi gerado pelo programa main.c\n");
+        fprintf(sc, "\n //Guilherme Henrique Moreira  22117039-2\n");
+        fprintf(sc, "\n //Compiladores Projeto1  Prof: Pier\n\n");
+        fprintf(sc, "int main(){ \n \n");
+        fprintf(sc, "	");
+        fprintf(sc, "char stc[200]; \n");
+        fprintf(sc, "	");
+        fprintf(sc, "int p=0; \n");
+        fprintf(sc, "	");
+        fprintf(sc, "printf(\"digite a sentenca: \"); \n");
+        fprintf(sc, "	");
+        fprintf(sc, "scanf(\"%%c\",stc);\n");
+        fprintf(sc, "	");
+        fprintf(sc, "goto E%d; \n\n", estini);
+
+        //construcao do automato goto
+        for (i = 0; i < est; i++) {
+            fprintf(sc, "	");
+            fprintf(sc, "E%d:\n\n", i);
+
+            int final = 0;
+            int nescr = 0;//Variavel de controle de estado final
+
+            //variaveis importantes! caso seja estado final o primeiro if nao sera de rejeicao caso a sentenca acabe
+            //logo, estas variaveis sao um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
+            int jfp = 0;//Caso !=(-1)
+            int jfd = 0;//Caso ==(-1)
+            
+            //For para verificar se o estado atual eh final!!!
+            for (final = 0; final<qtdfin; final++) {
+                if (i == fin[final]) {
+                    nescr++;
+                }
+            }
+            //Caso nao seja estado final, fazer p==0 -> rejeita
+            if (nescr == 0) {
+                fprintf(sc, "	");
+                fprintf(sc, "if(stc[p]==0){\n");
+                fprintf(sc, "	");
+                fprintf(sc, "	");
+                fprintf(sc, "goto REJEITA; \n");
+                fprintf(sc, "	");
+                fprintf(sc, "}\n \n");
+            }
+            //Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
+            else if (nescr == 1) {
+                for (j = 0; j < numsimb; j++) {
+                    //Primeiro if para aceita
+                    if (reg[i][j] != (-1)) {
+                        jfp = 1;
+                        fprintf(sc, "	");
+                        fprintf(sc, "if(stc[p]=='%c'){ \n", simb[j]);
+                        fprintf(sc, "	");
+                        fprintf(sc, "	");
+                        fprintf(sc, "p++;\n");
+                        fprintf(sc, "	");
+                        fprintf(sc, "	");
+                        fprintf(sc, "goto E%d;\n", reg[i][j]);
+                        fprintf(sc, "	");
+                        fprintf(sc, "} \n \n");
+                        j = 200;
+                    }  
+                    //Primeiro if para rejeita(caso de uso: estado final que nao recebe nenhum simbolo)
+                    else if (reg[i][j] == (-1)) {
+                        jfd = 1;
+                        fprintf(sc, "	");
+                        fprintf(sc, "if(stc[p]=='%c') { \n", simb[j]);
+                        fprintf(sc, "	");
+                        fprintf(sc, "	");
+                        fprintf(sc, "goto REJEITA;\n");
+                        fprintf(sc, "	");
+                        fprintf(sc, "} \n \n");
+                        j = 200;
+                    }
+                }
+            }
+
+            //For para fazer else if apos o primeiro if
+            for (j = 0; j < numsimb; j++) {
+                if (reg[i][j] != (-1) && jfp == 0) {
+                    fprintf(sc, "	");
+                    fprintf(sc, "else if(stc[p]=='%c'){ \n", simb[j]);
+                    fprintf(sc, "	");
+                    fprintf(sc, "	");
+                    fprintf(sc, "p++;\n");
+                    fprintf(sc, "	");
+                    fprintf(sc, "	");
+                    fprintf(sc, "goto E%d;\n", reg[i][j]);
+                    fprintf(sc, "	");
+                    fprintf(sc, "} \n \n");
+                }  
+                //Caso o primeiro if ja tenho sido feito(jfp) escrever apenas os proximos 
+                else if (reg[i][j] != (-1) && jfp == 1) {
+                    jfp = 0;
+                }
+            }
+
+            //For para fazer else apos o primeiro if
+            for (j = 0; j < numsimb; j++) {
+                if (reg[i][j] == (-1) && jfd == 0) {
+                    fprintf(sc, "	");
+                    fprintf(sc, "else if(stc[p]=='%c') { \n", simb[j]);
+                    fprintf(sc, "	");
+                    fprintf(sc, "	");
+                    fprintf(sc, "goto REJEITA;\n");
+                    fprintf(sc, "	");
+                    fprintf(sc, "} \n \n");
+                }
+                //Caso o primeiro if ja tenho sido feito(jfd) escrever apenas os proximos 
+                else if (reg[i][j] == (-1) && jfd == 1) {
+                    jfd = 0;
+                }
+            }
+
+            //For para fazer goto ACEITA, caso seja estado final
+            if (nescr == 1) {
+                fprintf(sc, "	");
+                fprintf(sc, "else\n");
+                fprintf(sc, "	");
+                fprintf(sc, "	");
+                fprintf(sc, "goto ACEITA;\n \n");
+            }
+
+        }
+
+
+        //aceita e rejeita
+        fprintf(sc, "	");
+        fprintf(sc, "REJEITA:\n");
+        fprintf(sc, "	");
+        fprintf(sc, "printf(\"rejeita\"); \n");
+        fprintf(sc, "	");
+        fprintf(sc, "exit(0);\n \n ");
+        fprintf(sc, "	");
+        fprintf(sc, "ACEITA:\n");
+        fprintf(sc, "	");
+        fprintf(sc, "printf(\"aceita\"); \n");
+        fprintf(sc, "	");
+        fprintf(sc, "exit(0);\n \n ");
+
+
+        //fechamento main e fechamento arquivo.c
+        fprintf(sc, "} ");
+        if (fclose(sc) == 0) {
+            printf("[ I ]	Arquivo 'AutomatoGoto.c' Gerado!	[ I ]\n");
+        } else {
+            printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
+        }
+ 
+        //------------------------------------------------------->>> AUTOMATO FUNCAO <<<----------------------------------------------------------------------
+        
+        sc = fopen("AutomatoFunc.c", "w");
+        fflush(sc);
+
+        //inicializacao code funcao
+        //fprintf(sc,"	");
+        fprintf(sc, "#include <stdio.h>\n");
+        fprintf(sc, "#include <stdlib.h>\n\n");
+        fprintf(sc, "\n //Este codigo automato foi gerado pelo programa main.c\n");
+        fprintf(sc, "\n //Guilherme Henrique Moreira  22117039-2\n");
+        fprintf(sc, "\n //Compiladores Projeto1  Prof: Pier\n\n");
+
+        //for declaracao funcoes estados
+        for (i = 0; i < est; i++) {
+            fprintf(sc, "void e%d();\n", i);
+        }
+
+        //declaracao aceita rejeita, char stc, int p
+        fprintf(sc, "void rejeita();\n");
+        fprintf(sc, "void aceita(); \n\n");
+        fprintf(sc, "char stc[200]; \n");
+        fprintf(sc, "int p=0; \n\n");
+
+        //int main e chamada e inicio automato
+        fprintf(sc, "int main(){ \n \n");
+        fprintf(sc, "	");
+        fprintf(sc, "printf(\"digite a sentenca: \"); \n");
+        fprintf(sc, "	");
+        fprintf(sc, "scanf(\"%%c\",stc);\n");
+        fprintf(sc, "	");
+        fprintf(sc, "e%d(); \n", estini);
+        fprintf(sc, "	");
+        fprintf(sc, "return(0); \n");
+        fprintf(sc, "}\n\n");
+
+        //Construcao do automato funcao
+        for (i = 0; i < est; i++) {
+            fprintf(sc, "void e%d(){ \n", i);
+
+            int final = 0;
+            int nescr = 0;
+            
+            //variaveis importantes! caso seja estado final o primeiro if nao sera de rejeicao caso a sentenca acabe
+            //logo, estas variaveis sao um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
+            int jfp = 0;//Caso !=(-1)
+            int jfd = 0;//Caso ==(-1)
+            
+            //For para verificar se o estado atual eh final!!!
+            for (final = 0; final<qtdfin; final++) {
+                if (i == fin[final]) {
+                    nescr++;
+                }
+            }
+
+            //Caso nao seja estado final, fazer p==0 -> rejeita
+            if (nescr == 0) {
+                fprintf(sc, "	");
+                fprintf(sc, "if(stc[p]==0){\n");
+                fprintf(sc, "	");
+                fprintf(sc, "	");
+                fprintf(sc, "rejeita(); \n");
+                fprintf(sc, "	");
+                fprintf(sc, "}\n \n");
+            }
+            //Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
+            else if (nescr == 1) {
+                for (j = 0; j < numsimb; j++) {
+                    if (reg[i][j] != (-1)) {
+                        jfp = 1;
+                        fprintf(sc, "	");
+                        fprintf(sc, "if(stc[p]=='%c'){ \n", simb[j]);
+                        fprintf(sc, "	");
+                        fprintf(sc, "	");
+                        fprintf(sc, "p++;\n");
+                        fprintf(sc, "	");
+                        fprintf(sc, "	");
+                        fprintf(sc, "e%d();\n", reg[i][j]);
+                        fprintf(sc, "	");
+                        fprintf(sc, "} \n \n");
+                        j = 200;
+                    }
+                    //Primeiro if para rejeita(caso de uso: estado final que nao recebe nenhum simbolo)
+                    else if (reg[i][j] == (-1)) {
+                        jfd = 1;
+                        fprintf(sc, "	");
+                        fprintf(sc, "if(stc[p]=='%c') { \n", simb[j]);
+                        fprintf(sc, "	");
+                        fprintf(sc, "	");
+                        fprintf(sc, "rejeita();\n");
+                        fprintf(sc, "	");
+                        fprintf(sc, "} \n \n");
+                        j = 200;
+                    }
+                }
+
+            }
+
+            //For para fazer else if apos o primeiro if
+            for (j = 0; j < numsimb; j++) {
+                if (reg[i][j] != (-1) && jfp == 0) {
+                    fprintf(sc, "       ");
+                    fprintf(sc, "else if(stc[p]=='%c'){ \n", simb[j]);
+                    fprintf(sc, "	");
+                    fprintf(sc, "	");
+                    fprintf(sc, "p++;\n");
+                    fprintf(sc, "	");
+                    fprintf(sc, "	");
+                    fprintf(sc, "e%d();\n", reg[i][j]);
+                    fprintf(sc, "	");
+                    fprintf(sc, "} \n \n");
+                }  
+                //Caso o primeiro if ja tenho sido feito(jfp) escrever apenas os proximos 
+                else if (reg[i][j] != (-1) && jfp == 1) {
+                    jfp = 0;
+                }
+            }
+
+            //For para fazer else de rejeicao apos o primeiro if
+            for (j = 0; j < numsimb; j++) {
+                if (reg[i][j] == (-1) && jfd==0) {
+                    fprintf(sc, "	");
+                    fprintf(sc, "else if(stc[p]=='%c') { \n", simb[j]);
+                    fprintf(sc, "	");
+                    fprintf(sc, "	");
+                    fprintf(sc, "rejeita();\n");
+                    fprintf(sc, "	");
+                    fprintf(sc, "} \n \n");
+                }
+                //Caso o primeiro if ja tenho sido feito(jfd) escrever apenas os proximos 
+                else if (reg[i][j] == (-1) && jfd == 1) {
+                    jfd = 0;
+                }
+            }
+
+            //For para fazer aceita(); caso seja estado final
+            if (nescr == 1) {
+                fprintf(sc, "	");
+                fprintf(sc, "else\n");
+                fprintf(sc, "	");
+                fprintf(sc, "	");
+                fprintf(sc, "aceita();\n\n");
+            }
+
+            fprintf(sc, "} \n \n");
+        }
+
+
+        //aceita e rejeita
+        fprintf(sc, "void rejeita(){\n");
+        fprintf(sc, "	");
+        fprintf(sc, "printf(\"rejeita\");\n");
+        fprintf(sc, "	");
+        fprintf(sc, "exit(0);\n\n");
+        fprintf(sc, "} \n \n");
+        fprintf(sc, "void aceita(){\n");
+        fprintf(sc, "	");
+        fprintf(sc, "printf(\"aceita\");\n");
+        fprintf(sc, "	");
+        fprintf(sc, "exit(0);\n");
+        fprintf(sc, "} \n \n");
+        if (fclose(sc) == 0) {
+            printf("[ I ]	Arquivo 'AutomatoFunc.c' Gerado!	[ I ]\n");
+        } else {
+            printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
+        }
+
+    
     }
     return 0;
 }
