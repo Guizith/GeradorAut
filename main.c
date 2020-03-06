@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
         fprintf(sc, "	");
         fprintf(sc, "printf(\"digite a sentenca: \"); \n");
         fprintf(sc, "	");
-        fprintf(sc, "scanf(\"%%c\",stc);\n");
+        fprintf(sc, "scanf(\"%%s\",stc);\n");
         fprintf(sc, "	");
         fprintf(sc, "goto E%d; \n\n", estini);
 
@@ -115,8 +115,6 @@ int main(int argc, char *argv[]) {
             int final = 0;
             int nescr = 0;//Variavel de controle de estado final
 
-            //variaveis importantes! caso seja estado final o primeiro if nao sera de rejeicao caso a sentenca acabe
-            //logo, estas variaveis sao um flag para que o for que escreve else if saber que o primeiro caso ja foi feito
             int jfp = 0;//Caso !=(-1)
             int jfd = 0;//Caso ==(-1)
             
@@ -126,23 +124,16 @@ int main(int argc, char *argv[]) {
                     nescr++;
                 }
             }
-            //Caso nao seja estado final, fazer p==0 -> rejeita
-            if (nescr == 0) {
-                fprintf(sc, "	");
-                fprintf(sc, "if(stc[p]==0){\n");
-                fprintf(sc, "	");
-                fprintf(sc, "	");
-                fprintf(sc, "goto REJEITA; \n");
-                fprintf(sc, "	");
-                fprintf(sc, "}\n \n");
-            }
-            //Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
-            else if (nescr == 1) {
+	    
+	    int ftm=0; //Flag para caso seja estado final e nao aceita nenhum simbolo
+	    
+	    //Caso seja estado final fazer o primeiro if, e definir variavel jfp=1
                 for (j = 0; j < numsimb; j++) {
                     //Primeiro if para aceita
                     if (reg[i][j] != (-1)) {
                         jfp = 1;
-                        fprintf(sc, "	");
+			ftm=1;  
+			fprintf(sc, "	");
                         fprintf(sc, "if(stc[p]=='%c'){ \n", simb[j]);
                         fprintf(sc, "	");
                         fprintf(sc, "	");
@@ -153,25 +144,30 @@ int main(int argc, char *argv[]) {
                         fprintf(sc, "	");
                         fprintf(sc, "} \n \n");
                         j = 200;
-                    }  
-                    //Primeiro if para rejeita(caso de uso: estado final que nao recebe nenhum simbolo)
-                    else if (reg[i][j] == (-1)) {
-                        jfd = 1;
+		    }
+		    else if(reg[i][j] == (-1)){
+		    }
+		    jfd++;
+		}          
+
+		/*
+                for (j = 0; j < numsimb; j++) {
+                    //Primeiro if para aceita
+                    if (reg[i][j] != (-1) && ftm==0 && nescr==1) {
+			fprintf(sc, "	");
+                        fprintf(sc, "if(stc[p]=='0'){ \n");
                         fprintf(sc, "	");
-                        fprintf(sc, "if(stc[p]=='%c') { \n", simb[j]);
                         fprintf(sc, "	");
-                        fprintf(sc, "	");
-                        fprintf(sc, "goto REJEITA;\n");
+                        fprintf(sc, "goto ACEITA;\n");
                         fprintf(sc, "	");
                         fprintf(sc, "} \n \n");
                         j = 200;
-                    }
-                }
-            }
-
+        	    }
+		}
+		*/
             //For para fazer else if apos o primeiro if
             for (j = 0; j < numsimb; j++) {
-                if (reg[i][j] != (-1) && jfp == 0) {
+                if (reg[i][j] != (-1) && jfp ==0){
                     fprintf(sc, "	");
                     fprintf(sc, "else if(stc[p]=='%c'){ \n", simb[j]);
                     fprintf(sc, "	");
@@ -189,34 +185,80 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            //For para fazer else apos o primeiro if
+
+
+/*
+            //For para fazer else if apos o primeiro if
             for (j = 0; j < numsimb; j++) {
-                if (reg[i][j] == (-1) && jfd == 0) {
+                if (reg[i][j] != (-1) && jfd == 0 && nescr ==1) {
                     fprintf(sc, "	");
-                    fprintf(sc, "else if(stc[p]=='%c') { \n", simb[j]);
+                    fprintf(sc, "else if(stc[p]=='%c'){ \n", simb[j]);
                     fprintf(sc, "	");
                     fprintf(sc, "	");
-                    fprintf(sc, "goto REJEITA;\n");
+                    fprintf(sc, "p++;\n");
+                    fprintf(sc, "	");
+                    fprintf(sc, "	");
+                    fprintf(sc, "goto E%d;\n", reg[i][j]);
                     fprintf(sc, "	");
                     fprintf(sc, "} \n \n");
-                }
-                //Caso o primeiro if ja tenho sido feito(jfd) escrever apenas os proximos 
-                else if (reg[i][j] == (-1) && jfd == 1) {
+                }  
+                //Caso o primeiro if ja tenho sido feito(jfp) escrever apenas os proximos 
+                else if (reg[i][j] != (-1) && jfd == 1 && nescr ==1) {
                     jfd = 0;
                 }
             }
 
+*/
+
+            //For para fazer goto REJEITA, caso nao seja estado final
+            if (nescr == 0) {
+
+                fprintf(sc, "	");
+                fprintf(sc, "else{\n");
+                fprintf(sc, "	");
+                fprintf(sc, "	");
+                fprintf(sc, "goto REJEITA;\n");
+		fprintf(sc, "	");
+		fprintf(sc, "}\n\n");
+
+
+	    }           
+		
             //For para fazer goto ACEITA, caso seja estado final
-            if (nescr == 1) {
+            if (nescr == 1 && ftm ==1) {
                 fprintf(sc, "	");
-                fprintf(sc, "else\n");
+                fprintf(sc, "else if(stc[p]==0){\n");
                 fprintf(sc, "	");
                 fprintf(sc, "	");
-                fprintf(sc, "goto ACEITA;\n \n");
-            }
-
-        }
-
+                fprintf(sc, "goto ACEITA;\n");
+		fprintf(sc, "	");
+                fprintf(sc, "}\n");
+		fprintf(sc, "else{\n");
+                fprintf(sc, "	");
+                fprintf(sc, "	");
+		fprintf(sc, "goto REJEITA:\n ");
+	      	fprintf(sc, "	");
+		fprintf(sc, "}\n\n");
+	    }
+	    else if(nescr==1 && jfd==numsimb){ 
+	        fprintf(sc, "	");
+                fprintf(sc, "if(stc[p]==0){\n");
+                fprintf(sc, "	");
+                fprintf(sc, "	");
+                fprintf(sc, "goto ACEITA;\n");
+		fprintf(sc, "	");
+                fprintf(sc, "}\n");
+		fprintf(sc, "	");
+		fprintf(sc, "else{\n");
+	       	fprintf(sc, "	");
+                fprintf(sc, "	");
+		fprintf(sc, "goto REJEITA:\n ");
+	      	fprintf(sc, "	");
+		fprintf(sc, "}\n\n");	
+	    
+	    }
+	           
+	}	
 
         //aceita e rejeita
         fprintf(sc, "	");
@@ -240,8 +282,11 @@ int main(int argc, char *argv[]) {
         } else {
             printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
         }
+	
 
-    } else if (fugo == 1) {
+	 
+}
+     else if (fugo == 1) {
         FILE *sc = fopen("AutomatoFunc.c", "w");
         fflush(sc);
 
@@ -269,7 +314,7 @@ int main(int argc, char *argv[]) {
         fprintf(sc, "	");
         fprintf(sc, "printf(\"digite a sentenca: \"); \n");
         fprintf(sc, "	");
-        fprintf(sc, "scanf(\"%%c\",stc);\n");
+        fprintf(sc, "scanf(\"%%s\",stc);\n");
         fprintf(sc, "	");
         fprintf(sc, "e%d(); \n", estini);
         fprintf(sc, "	");
@@ -428,7 +473,7 @@ int main(int argc, char *argv[]) {
         fprintf(sc, "	");
         fprintf(sc, "printf(\"digite a sentenca: \"); \n");
         fprintf(sc, "	");
-        fprintf(sc, "scanf(\"%%c\",stc);\n");
+        fprintf(sc, "scanf(\"%%s\",stc);\n");
         fprintf(sc, "	");
         fprintf(sc, "goto E%d; \n\n", estini);
 
@@ -595,7 +640,7 @@ int main(int argc, char *argv[]) {
         fprintf(sc, "	");
         fprintf(sc, "printf(\"digite a sentenca: \"); \n");
         fprintf(sc, "	");
-        fprintf(sc, "scanf(\"%%c\",stc);\n");
+        fprintf(sc, "scanf(\"%%s\",stc);\n");
         fprintf(sc, "	");
         fprintf(sc, "e%d(); \n", estini);
         fprintf(sc, "	");
