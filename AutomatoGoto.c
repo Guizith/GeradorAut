@@ -13,35 +13,23 @@ int main(){
 	char stc[200]; 
 	int p=0; 
 	printf("digite a sentenca: "); 
-	scanf("%c",stc);
+	scanf("%s",stc);
 	goto E0; 
 
 	E0:
 
-	if(stc[p]==0){
-		goto REJEITA; 
-	}
- 
-	else if(stc[p]=='a'){ 
+	if(stc[p]=='a'){ 
 		p++;
 		goto E1;
 	} 
  
-	else if(stc[p]=='b') { 
+	else{
 		goto REJEITA;
-	} 
- 
-	else if(stc[p]=='c') { 
-		goto REJEITA;
-	} 
- 
+	}
+
 	E1:
 
-	if(stc[p]=='a') { 
-		goto REJEITA;
-	} 
- 
-	else if(stc[p]=='b'){ 
+	if(stc[p]=='b'){ 
 		p++;
 		goto E0;
 	} 
@@ -51,26 +39,22 @@ int main(){
 		goto E2;
 	} 
  
-	else
+	else if(stc[p]==0){
 		goto ACEITA;
- 
+	}
+	else{
+		goto REJEITA;
+ 	}
+
 	E2:
 
-	if(stc[p]=='a') { 
-		goto REJEITA;
-	} 
- 
-	else if(stc[p]=='b') { 
-		goto REJEITA;
-	} 
- 
-	else if(stc[p]=='c') { 
-		goto REJEITA;
-	} 
- 
-	else
+	if(stc[p]==0){
 		goto ACEITA;
- 
+	}
+	else{
+		goto REJEITA;
+ 	}
+
 	REJEITA:
 	printf("rejeita"); 
 	exit(0);

@@ -20,69 +20,53 @@ int p=0;
 int main(){ 
  
 	printf("digite a sentenca: "); 
-	scanf("%c",stc);
+	scanf("%s",stc);
 	e0(); 
 	return(0); 
 }
 
 void e0(){ 
-	if(stc[p]==0){
-		rejeita(); 
-	}
- 
-       else if(stc[p]=='a'){ 
+	if(stc[p]=='a'){ 
 		p++;
 		e1();
 	} 
  
-	else if(stc[p]=='b') { 
+	else{
 		rejeita();
-	} 
- 
-	else if(stc[p]=='c') { 
-		rejeita();
-	} 
- 
-} 
- 
+	}
+
+}
+
 void e1(){ 
-	if(stc[p]=='a') { 
-		rejeita();
-	} 
- 
-       else if(stc[p]=='b'){ 
+	if(stc[p]=='b'){ 
 		p++;
 		e0();
 	} 
  
-       else if(stc[p]=='c'){ 
+	else if(stc[p]=='c'){ 
 		p++;
 		e2();
 	} 
  
-	else
+	else if(stc[p]==0){
 		aceita();
+	}
+	else{
+		rejeita();
+ 	}
 
-} 
- 
+}
+
 void e2(){ 
-	if(stc[p]=='a') { 
-		rejeita();
-	} 
- 
-	else if(stc[p]=='b') { 
-		rejeita();
-	} 
- 
-	else if(stc[p]=='c') { 
-		rejeita();
-	} 
- 
-	else
+	if(stc[p]==0){
 		aceita();
+	}
+	else{
+		rejeita();
+ 	}
 
-} 
- 
+}
+
 void rejeita(){
 	printf("rejeita");
 	exit(0);
