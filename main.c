@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < est; i++) {
         for (j = 0; j < numsimb; j++) {
             printf("Para o estado e%d , simbolo %c , qual proximo estado? ", i, simb[j]);
-            scanf("%d", &reg[i][j]);
+scanf("%d", &reg[i][j]);
         }
     }
 
@@ -85,7 +85,10 @@ int main(int argc, char *argv[]) {
      */
     //=====================================================>>> Inicio de construcao do codigo <<< ===============================================================================
     if (fugo == 2) {
-        FILE *sc = fopen("AutomatoGoto.c", "w");
+	printf("\nQual nome do automato?(Nao esqueca .c no final\n");
+	char nmaut[25];
+	scanf("%s",nmaut);
+        FILE *sc = fopen(nmaut, "w");
         fflush(sc);
 
         //inicializacao code goto
@@ -215,7 +218,7 @@ int main(int argc, char *argv[]) {
                 fprintf(sc, "	");
 		fprintf(sc, "goto REJEITA;\n ");
 	      	fprintf(sc, "	");
-		fprintf(sc, "}\n\n");	
+		fprintf(sc, "}\n\n");
 	    
 	    }
 	           
@@ -239,7 +242,7 @@ int main(int argc, char *argv[]) {
         //fechamento main e fechamento arquivo.c
         fprintf(sc, "} ");
         if (fclose(sc) == 0) {
-            printf("[ I ]	Arquivo 'AutomatoGoto.c' Gerado!	[ I ]\n");
+            printf("[ I ]	Arquivo '%s' Gerado!	[ I ]\n",nmaut);
         } else {
             printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
         }
@@ -248,7 +251,10 @@ int main(int argc, char *argv[]) {
 	 
 }
      else if (fugo == 1) {
-        FILE *sc = fopen("AutomatoFunc.c", "w");
+       	printf("\nQual nome do automato?(Nao esqueca .c no final\n");
+	char nmaut[25];
+	scanf("%s",nmaut);	    
+	FILE *sc = fopen("AutomatoFunc.c", "w");
         fflush(sc);
 
         //inicializacao code funcao
@@ -410,15 +416,22 @@ int main(int argc, char *argv[]) {
         fprintf(sc, "exit(0);\n");
         fprintf(sc, "} \n \n");
         if (fclose(sc) == 0) {
-            printf("[ I ]	Arquivo 'AutomatoFunc.c' Gerado!	[ I ]\n");
+            printf("[ I ]	Arquivo '%s' Gerado!	[ I ]\n",nmaut);
         } else {
             printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
         }
 	
     } else if (fugo == 3) {
+	printf("\nQual nome do automato feito com funcao?(Nao esqueca .c no final\n");
+	char nmaut[25];
+	scanf("%s",nmaut);
 
-        //------------------------------------------------------->>> AUTOMATO GOTO <<<-----------------------------------------------------------------------
-       FILE *sc = fopen("AutomatoGoto.c", "w");
+	printf("\nQual nome do automato feito com goto?(Nao esqueca .c no final\n");
+	char nmautt[25];
+	scanf("%s",nmautt);
+        
+	//------------------------------------------------------->>> AUTOMATO GOTO <<<-----------------------------------------------------------------------
+       FILE *sc = fopen(nmautt, "w");
         fflush(sc);
 
         //inicializacao code goto
@@ -572,7 +585,7 @@ int main(int argc, char *argv[]) {
         //fechamento main e fechamento arquivo.c
         fprintf(sc, "} ");
         if (fclose(sc) == 0) {
-            printf("[ I ]	Arquivo 'AutomatoGoto.c' Gerado!	[ I ]\n");
+            printf("[ I ]	Arquivo '%s' Gerado!	[ I ]\n",nmautt);
         } else {
             printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
         }
@@ -580,7 +593,7 @@ int main(int argc, char *argv[]) {
 
 
         //------------------------------------------------------->>> AUTOMATO FUNCAO <<<----------------------------------------------------------------------
-    	sc = fopen("AutomatoFunc.c", "w");
+    	sc = fopen(nmaut, "w");
         fflush(sc);
 
         //inicializacao code funcao
@@ -741,7 +754,7 @@ int main(int argc, char *argv[]) {
         fprintf(sc, "exit(0);\n");
         fprintf(sc, "} \n \n");
         if (fclose(sc) == 0) {
-            printf("[ I ]	Arquivo 'AutomatoFunc.c' Gerado!	[ I ]\n");
+            printf("[ I ]	Arquivo '%s' Gerado!	[ I ]\n",nmaut);
         } else {
             printf("[ I ]	Erro!! Arquivo nao foi finalizado corretamente	[ I ]\n");
         }
