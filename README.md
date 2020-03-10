@@ -1,2 +1,3 @@
 # GeradorAut
-Projeto de compiladores, programa gerador de autômatos
+Projeto de compiladores, programa gerador de Autômatos Finitos Determinísticos
+Professor Pier Ricchetti
